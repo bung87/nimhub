@@ -12,6 +12,7 @@ srcDir        = "src"
 
 requires "nim >= 1.3.5"
 requires "karax"
+requires "jester@#head"
 
 task watch,"watch":
-  exec "nim c -r src/watch.nim"
+  exec "nim c -r --threads:on src/watch.nim"

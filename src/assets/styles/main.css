@@ -4,6 +4,10 @@ body{
     color:snow;
     background-color:#1e202a;
 }
+.site-header{
+    height:48px;
+}
+
 .nav-content{
     overflow:auto;
     text-align: center;
@@ -32,4 +36,17 @@ body{
     border-radius:3px;
     outline:none;
     text-align: left;
+}
+
+.pure-img{
+    transition: all .25s ease-in-out;
+}
+.pure-img:hover{
+    -webkit-transform: scale(1.05);
+    -ms-transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+video{
+    width:100%;
 }
