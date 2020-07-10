@@ -6,6 +6,7 @@ proc theader*():VNode {.compact.} =
       tdiv(class="nav-content"):
         a(href="/",class="pure-menu-heading pure-menu-link site-logo-container"):
           img(class="site-logo",src="src/assets/images/logo.svg",height="28",alt="Nim")
+        input(type="text",class="pure-input-rounded")
         ul(class="pure-menu-list"):
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link "):
@@ -13,3 +14,4 @@ proc theader*():VNode {.compact.} =
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link "):
               text "Blog"
+      tdiv(class="menu-fade")

@@ -15,4 +15,3 @@ requires "karax"
 
 task watch,"watch":
   exec "nim c -r src/watch.nim"
-  

@@ -4,7 +4,6 @@ include karax / prelude
 import karax/[kdom,vdom]
 import jsffi except setInterval
 import jsconsole
-import future
 
 proc querySelector(ele:any,q:cstring):Element {.importcpp:"#.querySelector(@)",nodecl.}
 
