@@ -2,11 +2,14 @@ include karax / prelude
 import nimvideo/header
 import nimvideo/carousel
 import nimvideo/mediaplayer
+import jsconsole
+import nimvideo/najax
 
 const url = "https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e5805a1615e68abd4384827ae323bcf1/Hero_Video.mp4"
 
 
 proc createDom(data: RouterData): VNode =
+  
   result = buildHtml(tdiv):
     theader()
     if data.hashPart == "#/video":
