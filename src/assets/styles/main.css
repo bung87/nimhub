@@ -22,8 +22,14 @@ body{
     color: snow;
 }
 .pure-menu input {
-    margin-top: -6px;
+    margin-top: -18px;
 }
+@media (min-width: 769px){
+    .pure-menu input {
+       margin-top: -6px;
+       }
+   }
+
 @media (min-width: 1200px){
  .pure-menu input {
     margin-top: -8px;
