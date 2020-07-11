@@ -43,12 +43,16 @@ proc watchBuild(){.thread.} =
     for path in walkDirRec("."):
       if ".git" in path:
         continue
+
       if files.hasKey(path):
         if files[path] != getLastModificationTime(path):
           echo("File changed: " & path)
-          build(name,  selectedCss, false)
+          echo path,absolutePath(name & ".html")
+          build(name,  selectedCss, true)
           files[path] = getLastModificationTime(path)
       else:
+        if absolutePath(path) in [absolutePath(name & ".js"),absolutePath(name & ".html")]:
+          continue
         files[path] = getLastModificationTime(path)
 
 const js = name & ".js"

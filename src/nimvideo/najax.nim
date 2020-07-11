@@ -1,5 +1,6 @@
 import dom
 import jsffi
+import asyncjs
 
 type ThisObj {.importc.} = ref object
     readyState, status: int
@@ -102,9 +103,8 @@ proc send*(r:XMLHttpRequest,data:cstring|Document|Blob){.importcpp.}
 proc setRequestHeader*(r:XMLHttpRequest,header,value:cstring){.importcpp.}
   ##Sets the value of an HTTP request header. You must call setRequestHeader()after open(), but before send().
 
-proc ajax*(meth, url: cstring; headers: openarray[(cstring, cstring)] = [];
+proc ajax*(meth, url: cstring; cont: proc (httpStatus: int; response: cstring);headers: openarray[(cstring, cstring)] = [];
           data: cstring = cstring"";
-          cont: proc (httpStatus: int; response: cstring);
           useBinary: bool = false,
           blob: Blob = nil) =
   proc contWrapper(httpStatus: int; response: cstring) =
@@ -127,4 +127,29 @@ proc ajax*(meth, url: cstring; headers: openarray[(cstring, cstring)] = [];
   else:
     ajax.send(data)
 
-  
+proc ajax*(meth, url: cstring; headers: openarray[(cstring, cstring)] = [];
+          data: cstring = cstring"";
+          useBinary: bool = false,
+          blob: Blob = nil):Future[XMLHttpRequest] = 
+  var this {.importc: "this".}: XMLHttpRequest
+  var promise = newPromise() do (resolve: proc(response: XMLHttpRequest)):
+    let ajax = newXMLHttpRequest()
+    ajax.open(meth, url, true)
+    for a, b in items(headers):
+      ajax.setRequestHeader(a, b)
+    ajax.statechange proc() =
+      if this.readyState == rsDONE:
+        if this.status == 200:
+          resolve(this)
+        # else:
+        #   contWrapper(this.status, this.responseText)
+    if useBinary:
+      ajax.send(blob)
+    else:
+      ajax.send(data)
+  # proc thenImpl(that:JsObject,done:proc(resp:XMLHttpRequest):PromiseJs):JsObject =
+  #   return cast[JsObject](that).then(done)
+  # cast[JsObject](promise).then = thenImpl
+  return promise
+
+# proc then*(r: Future[XMLHttpRequest]; cb: proc(resp:XMLHttpRequest)){.importcpp: "#.then(#)",discardable.}

@@ -15,6 +15,7 @@ type Carousel* = ref object of VComponent
   textControls:seq[cstring]
   autoplay:bool
   displayControls:bool
+  data*:seq[JsObject]
   autoplayTime:int
 
 
@@ -47,26 +48,27 @@ proc render(x: VComponent): VNode =
     tdiv(class="slider__inner"):
       var cls:cstring
       # power of 4
-      for i in 0..7:
-        case i
-          of 0:
-            cls = cstring fmt"{self.classNameItem}-first"
-          of 1:
-            cls = cstring fmt"{self.classNameItem}-previous"
-          of 2:
-            cls = cstring fmt"{self.classNameItem}-selected"
-          of 3:
-            cls = cstring fmt"{self.classNameItem}-next"
-          of 4:
-            cls = cstring fmt"{self.classNameItem}-last"
-          else:
-            discard
-        tdiv(class=fmt"slider__item {cls}",data-index = $i):
-          tdiv(class="slider__item-container"):
-            img(class="slider__item-img",src="https://picsum.photos/id/106/300/300")
-          tdiv(class="slider__item-datas"):
-            span:
-              text $i
+      if self.data.len > 0:
+        for i in 0..7:
+          case i
+            of 0:
+              cls = cstring fmt"{self.classNameItem}-first"
+            of 1:
+              cls = cstring fmt"{self.classNameItem}-previous"
+            of 2:
+              cls = cstring fmt"{self.classNameItem}-selected"
+            of 3:
+              cls = cstring fmt"{self.classNameItem}-next"
+            of 4:
+              cls = cstring fmt"{self.classNameItem}-last"
+            else:
+              discard
+          tdiv(class=fmt"slider__item {cls}",data-index = $i):
+            tdiv(class="slider__item-container"):
+              img(class="slider__item-img",src=self.data[i].image.to(cstring))
+            tdiv(class="slider__item-datas"):
+              span:
+                text self.data[i].name.to(cstring)
     self.carouselControlsContainer
  
   self.setControls()
@@ -92,8 +94,9 @@ proc onAttach(x: VComponent) =
   let self = Carousel(x)
   initCarousel self
   
-proc carousel*(): Carousel =
-  result = newComponent(Carousel, render,onAttach)
+proc carousel*(nref:var Carousel): Carousel =
+  nref = newComponent(Carousel, render,onAttach)
+  nref
 
 const defaultTextControls = @[cstring"<i class='fas fa-chevron-left'></i>", cstring"<i class='fas fa-chevron-right'></i>"]
 const defaultCarouselControls = @[cstring"previous",cstring"next"]
