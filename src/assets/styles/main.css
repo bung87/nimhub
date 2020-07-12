@@ -9,8 +9,10 @@ body{
 }
 
 .nav-content{
-    overflow:auto;
+    /* overflow:auto; cause safari hide overlay element even it is fixed */
+    display:flow-root;
     text-align: center;
+    overflow-y: visible;
 }
 .pure-menu .pure-inputm,.pure-menu .pure-input-rounded{
     vertical-align: top;

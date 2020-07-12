@@ -22,7 +22,6 @@ type Carousel* = ref object of VComponent
 proc setInitialState*(self:Carousel) = 
   ## Assign initial css classes and attribute for each items
   var index = 0
-  console.log self,"setInitialState"
   for item in self.expanded[0]:
     item.setAttr("data-index", kstring $index)
     case index
@@ -76,7 +75,6 @@ proc render(x: VComponent): VNode =
   if self.displayControls:
     self.useControls()
   var play = proc() = 
-    console.log "play",self.carouselControlsContainer
     self.setCurrentState( cast[Element](self.carouselControlsContainer[1].dom), self.getCurrentState())
   if self.autoplay:
     discard window.setInterval(play,self.autoplayTime)
