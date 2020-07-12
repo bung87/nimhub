@@ -106,19 +106,19 @@ type
 
 proc getCurrentState*(self:Carousel): State = 
   let inner = self.expanded[0]
-  defer:
-    var selectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-selected")
-    var previousSelectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-previous")
-    var nextSelectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-next")
-    var firstCarouselItem = inner.dom.querySelector( fmt".{self.classNameItem}-first")
-    var lastCarouselItem = inner.dom.querySelector( fmt".{self.classNameItem}-last")
-    var indexLastCarouselItem = parseInt(lastCarouselItem.getAttribute(cstring"data-index"))
-    var indexFirstCarouselItem = parseInt(firstCarouselItem.getAttribute(cstring"data-index"))
-    var downIndex = indexFirstCarouselItem - 1
-    var upIndex = indexLastCarouselItem + 1
-    var downCommingCarouselItem = inner.dom.querySelector(fmt".{self.classNameItem}[data-index='{downIndex}']")
-    var upCommingCarouselItem = inner.dom.querySelector(fmt".{self.classNameItem}[data-index='{upIndex}']")
-    return (selectedItem,previousSelectedItem,nextSelectedItem,firstCarouselItem,lastCarouselItem,downCommingCarouselItem,upCommingCarouselItem,downIndex,upIndex)
+
+  var selectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-selected")
+  var previousSelectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-previous")
+  var nextSelectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-next")
+  var firstCarouselItem = inner.dom.querySelector( fmt".{self.classNameItem}-first")
+  var lastCarouselItem = inner.dom.querySelector( fmt".{self.classNameItem}-last")
+  var indexLastCarouselItem = parseInt(lastCarouselItem.getAttribute(cstring"data-index"))
+  var indexFirstCarouselItem = parseInt(firstCarouselItem.getAttribute(cstring"data-index"))
+  var downIndex = indexFirstCarouselItem - 1
+  var upIndex = indexLastCarouselItem + 1
+  var downCommingCarouselItem = inner.dom.querySelector(fmt".{self.classNameItem}[data-index='{downIndex}']")
+  var upCommingCarouselItem = inner.dom.querySelector(fmt".{self.classNameItem}[data-index='{upIndex}']")
+  return (selectedItem,previousSelectedItem,nextSelectedItem,firstCarouselItem,lastCarouselItem,downCommingCarouselItem,upCommingCarouselItem,downIndex,upIndex)
 
 
 
