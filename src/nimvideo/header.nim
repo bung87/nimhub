@@ -5,19 +5,21 @@ import jsconsole
 import ./najax
 import jsffi except `&`
 
-proc theader*():VNode =
-  
-  var onSelect = proc (s: cstring) = echo "now "
+type Thead* = ref object of VComponent
 
+proc render(x:VComponent):VNode = 
+  let self = Thead(x)
+  var onSelect = proc (s: cstring) = echo "now "
+  var choices = @[toJs"1111",toJs"22222"]
   var searchBox = buildHtml(input(type="text",class="pure-input-rounded",autocomplete="off"))
-  var autocompleteRef = AutocompleteComponent()
- 
+  var autoRef = autocomplete(choices,searchBox, onSelect)
   proc cb(httpStatus: int; response: cstring) =
     var data = fromJSON[seq[JsObject] ] response
     for item in data:
-      autocompleteRef.choices.add item.show.name
-    autocompleteRef.markDirty()
+      choices.add item.show.name
+    autoRef.markDirty()
     redraw()
+    console.log "cb"
 
   proc onkeyuplater(ev: kdom.Event; n: VNode) =
     ajax(cstring"get",cstring"http://api.tvmaze.com/search/shows?" & cstring"q=" & n.dom.value,cb)
@@ -31,7 +33,7 @@ proc theader*():VNode =
       tdiv(class="nav-content",style = style1):
         a(href="/",class="pure-menu-heading pure-menu-link site-logo-container"):
           img(class="site-logo",src="/images/logo.svg",height="28",alt="Nim")
-        autocomplete(searchBox, onSelect,nref=autocompleteRef)
+        autoRef
         ul(class="pure-menu-list"):
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link"):
@@ -40,3 +42,7 @@ proc theader*():VNode =
             a(href="/blog.html",class="pure-menu-link"):
               text "Blog"
       tdiv(class="menu-fade")
+
+proc theader*():Thead =
+  result = newComponent(Thead, render)
+  
