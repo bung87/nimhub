@@ -74,10 +74,7 @@ proc render(x: VComponent): VNode =
   self.onTouch()
   if self.displayControls:
     self.useControls()
-  var play = proc() = 
-    self.setCurrentState( cast[Element](self.carouselControlsContainer[1].dom), self.getCurrentState())
-  if self.autoplay:
-    discard window.setInterval(play,self.autoplayTime)
+  
 
 proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem="slider__item", displayControls=true,controlsClassName="slider__controls",carouselControls = defaultCarouselControls,textControls = defaultTextControls) = 
   self.controlsClassName = controlsClassName
@@ -91,6 +88,10 @@ proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem
 proc onAttach(x: VComponent) =
   let self = Carousel(x)
   initCarousel self
+  var play = proc() = 
+    self.setCurrentState( cast[Element](self.carouselControlsContainer[1].dom), self.getCurrentState())
+  if self.autoplay:
+    discard window.setInterval(play,self.autoplayTime)
   
 proc carousel*(nref:var Carousel): Carousel =
   nref = newComponent(Carousel, render,onAttach)
