@@ -68,6 +68,8 @@ proc render(x: VComponent): VNode =
             tdiv(class="slider__item-datas"):
               span:
                 text self.data[i].name.to(cstring)
+      else:
+        tdiv()
     self.carouselControlsContainer
  
   self.setControls()
@@ -87,14 +89,17 @@ proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem
 
 proc onAttach(x: VComponent) =
   let self = Carousel(x)
-  initCarousel self
+  
   var play = proc() = 
     self.setCurrentState( cast[Element](self.carouselControlsContainer[1].dom), self.getCurrentState())
   if self.autoplay:
     discard window.setInterval(play,self.autoplayTime)
+    # markDirty(self)
+    # redraw()
   
 proc carousel*(nref:var Carousel): Carousel =
   nref = newComponent(Carousel, render,onAttach)
+  initCarousel nref
   nref
 
 const defaultTextControls = @[cstring"<i class='fas fa-chevron-left'></i>", cstring"<i class='fas fa-chevron-right'></i>"]

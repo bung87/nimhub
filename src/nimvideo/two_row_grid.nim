@@ -13,6 +13,8 @@ proc render(x: VComponent):VNode =
         tdiv(class="pure-u-4-24"):
           img(class="pure-img",src=self.data[i].image.to(cstring))
           img(class="pure-img",src=self.data[i+1].image.to(cstring))
+    else:
+      tdiv()
 
 proc twoRowGrid*(nref:var TwoRowGrid): TwoRowGrid =
   nref = newComponent(TwoRowGrid, render)

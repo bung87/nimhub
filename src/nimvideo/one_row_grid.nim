@@ -12,6 +12,8 @@ proc render(x: VComponent):VNode =
       for i in countup(0,5):
         tdiv(class="pure-u-4-24"):
           img(class="pure-img",src=self.data[i].image.to(cstring))
+    else:
+      tdiv()
 
 proc oneRowGrid*(nref:var OneRowGrid): OneRowGrid =
   nref = newComponent(OneRowGrid, render)

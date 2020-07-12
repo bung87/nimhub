@@ -25,7 +25,7 @@ proc onAttach(x:VComponent) =
   self.inp.addEventListener(EventKind.onblur,onblur )
 
 
-proc renderItem(item: JsObject): VNode  =
+proc renderItem(item: JsObject): VNode =
   result = buildHtml(a(class = "pure-menu-link")):
     text item.to(cstring)
 
