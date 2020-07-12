@@ -14,13 +14,12 @@ const url = "https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e58
 
 # proc slice(e: JsObject, startindex: int = 0, endindex: int = e.size):JsObject{.importcpp: "#.slice(#,#)".}
 
-proc createDom(data: RouterData): VNode =
-  var shows:seq[JsObject] = @[]
-  var com = false
-  var refA:HeadGrid
-  var refB:TwoRowGrid
-  var refC:OneRowGrid
-  var refCarousel:Carousel
+var refA:HeadGrid
+var refB:TwoRowGrid
+var refC:OneRowGrid
+var refCarousel:Carousel
+
+proc post (data: RouterData)  =
   proc cb(httpStatus: int; response: cstring) =
     var data = fromJSON[seq[JsObject] ] response
     for index,item in data:
@@ -38,10 +37,14 @@ proc createDom(data: RouterData): VNode =
     refA.markDirty()
     refB.markDirty()
     refC.markDirty()
-    refCarousel.markDirty
+    refCarousel.markDirty()
     redraw()
    
   ajax(cstring"get",cstring"http://api.tvmaze.com/shows",cb)
+
+proc createDom(data: RouterData): VNode =
+
+
   result = buildHtml(tdiv):
     theader()
     if data.hashPart == "#/video":
@@ -65,4 +68,4 @@ proc createDom(data: RouterData): VNode =
           text "h2"
         oneRowGrid(nref = refC)
 
-setRenderer createDom
+setRenderer createDom,clientPostRenderCallback=post

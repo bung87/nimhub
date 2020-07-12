@@ -8,17 +8,13 @@ import jsffi except `&`
 type Thead* = ref object of VComponent
   searchBox*:VNode
   
-var choices = newRSeq[cstring]()
+var choices = newRSeq[JsObject]()
 var onSelect = proc (s: cstring) = echo "now "
 
 proc onAttach(x:VComponent) = 
   let self = Thead(x)
 
-    
 
- 
-  
-  
 
 proc render(x:VComponent):VNode = 
   let self = Thead(x)
@@ -33,8 +29,9 @@ proc render(x:VComponent):VNode =
         discard
       inc i
     for item in data:
-      choices.add item.show.name.to(cstring)
-      
+      console.log item.show.name
+      choices.add item.show.name
+
   proc onkeyuplater(ev: kdom.Event; n: VNode) =
     ajax(cstring"get",cstring"http://api.tvmaze.com/search/shows?" & cstring"q=" & n.dom.value,cb)
   self.searchBox = buildHtml(input(type="text",class="pure-input-rounded",autocomplete="off"))

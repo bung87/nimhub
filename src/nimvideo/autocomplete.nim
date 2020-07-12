@@ -25,11 +25,11 @@ proc onAttach(x:VComponent) =
   self.inp.addEventListener(EventKind.onblur,onblur )
 
 
-proc renderItem(item: cstring): VNode  =
+proc renderItem(item: JsObject): VNode  =
   result = buildHtml(a(class = "pure-menu-link")):
-    text item
+    text item.to(cstring)
 
-proc autocomplete*(choices:RSeq[cstring]; inp: VNode;onselection: proc(s: cstring)):  AutocompleteComponent =
+proc autocomplete*(choices:RSeq[JsObject]; inp: var VNode;onselection: proc(s: cstring)):  AutocompleteComponent =
  
   # inp.removeEventListener(EventKind.onfocus,pos )
   
