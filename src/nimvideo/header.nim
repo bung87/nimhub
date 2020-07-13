@@ -41,21 +41,17 @@ proc onAttach(x:VComponent) =
     var i = 0
 
     while i < autoRef.choices.len:
-      try:
-        autoRef.choices.delete(i)
-      except:
-        discard
+      autoRef.choices.delete(i)
       inc i
 
     var j = 0
     while j < data.len:
       autoRef.choices.add(data[j].show.name)
-      console.log  555,data[j].show.name
       inc j
-    # autoRef.runDiff()
-    console.log "abc"
-    autoRef.markDirty()
-    redraw(kxi)
+    autoRef.runDiff()
+    # console.log "abc"
+    # autoRef.markDirty()
+    # redraw(kxi)
 
 
   proc onkeyuplater(ev: kdom.Event; n: VNode) =
