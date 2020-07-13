@@ -13,12 +13,6 @@ var onSelect = proc (s: cstring) = echo "now "
 
 proc onAttach(x:VComponent) = 
   let self = Thead(x)
-
-
-
-proc render(x:VComponent):VNode = 
-  let self = Thead(x)
-
   proc cb(httpStatus: int; response: cstring) =
     var data = fromJSON[seq[JsObject] ] response
     var i = 0
@@ -36,6 +30,12 @@ proc render(x:VComponent):VNode =
     ajax(cstring"get",cstring"http://api.tvmaze.com/search/shows?" & cstring"q=" & n.dom.value,cb)
   self.searchBox = buildHtml(input(type="text",class="pure-input-rounded",autocomplete="off"))
   self.searchBox.addEventListener(EventKind.onkeyuplater,onkeyuplater )
+
+
+proc render(x:VComponent):VNode = 
+  let self = Thead(x)
+
+
   let style1 = style(
     (StyleAttr.overflowy, cstring"visible"),
   )

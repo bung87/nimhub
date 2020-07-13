@@ -11,8 +11,9 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.3.5"
-requires "karax#head"
+requires "karax"
 requires "jester#head"
+requires "regex#head"
 
 task watch,"watch":
   exec "nim c -r --threads:on src/watch.nim"

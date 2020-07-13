@@ -1,21 +1,25 @@
-import karax / [karax, karaxdsl, vdom, kdom, compact]
+import karax / [karax, karaxdsl, vdom, kdom, compact,reactive]
 import jsffi
 import jsconsole
 
 type TwoRowGrid* = ref object of VComponent
-  data*:seq[JsObject]
+  data*:RSeq[JsObject]
 
-proc render(x: VComponent):VNode =
+proc renderItem(x: TwoRowGrid,i:int):VNode = 
+  result = buildHtml(tdiv(class="pure-u-4-24")):
+    img(class="pure-img",src=x.data[i].image.to(cstring))
+    img(class="pure-img",src=x.data[i+1].image.to(cstring))
+
+proc render*(x: VComponent):VNode =
   let self = TwoRowGrid(x)
   result = buildHtml(tdiv(class="pure-g")):
     if self.data.len > 0:
       for i in countup(0,11,2):
-        tdiv(class="pure-u-4-24"):
-          img(class="pure-img",src=self.data[i].image.to(cstring))
-          img(class="pure-img",src=self.data[i+1].image.to(cstring))
+        renderItem(self,i)
     else:
       tdiv()
 
 proc twoRowGrid*(nref:var TwoRowGrid): TwoRowGrid =
   nref = newComponent(TwoRowGrid, render)
-  nref 
+  nref.data = newRSeq[JsObject]()
+  nref

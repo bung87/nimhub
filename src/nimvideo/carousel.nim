@@ -1,11 +1,13 @@
 {.experimental: "codeReordering".}
 import strformat
 include karax / prelude
-import karax/[kdom,vdom]
+import karax/[kdom,vdom,reactive]
 import jsffi except setInterval
 import jsconsole
 
 proc querySelector(ele:any,q:cstring):Element {.importcpp:"#.querySelector(@)",nodecl.}
+
+var classes:seq[string]
 
 type Carousel* = ref object of VComponent
   classNameItem*:cstring
@@ -17,7 +19,7 @@ type Carousel* = ref object of VComponent
   displayControls:bool
   data*:seq[JsObject]
   autoplayTime:int
-
+  trigger:string
 
 proc setInitialState*(self:Carousel) = 
   ## Assign initial css classes and attribute for each items
@@ -26,43 +28,32 @@ proc setInitialState*(self:Carousel) =
     item.setAttr("data-index", kstring $index)
     case index
       of 0:
-        cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-first")
+        classes[index] = fmt"{self.classNameItem}-first"
       of 1:
-        cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-previous")
+        classes[index] =  fmt"{self.classNameItem}-previous"
       of 2:
-        cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-selected")
+        classes[index] = fmt"{self.classNameItem}-selected"
       of 3:
-        cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-next")
+        classes[index] = fmt"{self.classNameItem}-next"
       of 4:
-        cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-last")
+        classes[index] = fmt"{self.classNameItem}-last"
       else:
         discard
     inc index
+  self.markDirty()
+  redraw()
 
 
 proc render(x: VComponent): VNode =
+  console.log "render"
   let self = Carousel(x)
   self.carouselControlsContainer = tree(VNodeKind.tdiv,attrs = @[ (kstring"class",kstring"slider__controls") ] )
   result = buildHtml(tdiv(class="slider")):
     tdiv(class="slider__inner"):
-      var cls:cstring
       # power of 4
       if self.data.len > 0:
         for i in 0..7:
-          case i
-            of 0:
-              cls = cstring fmt"{self.classNameItem}-first"
-            of 1:
-              cls = cstring fmt"{self.classNameItem}-previous"
-            of 2:
-              cls = cstring fmt"{self.classNameItem}-selected"
-            of 3:
-              cls = cstring fmt"{self.classNameItem}-next"
-            of 4:
-              cls = cstring fmt"{self.classNameItem}-last"
-            else:
-              discard
-          tdiv(class=fmt"slider__item {cls}",data-index = $i):
+          tdiv(class=fmt"slider__item {self.trigger} {classes[i]}",data-index = $i):
             tdiv(class="slider__item-container"):
               img(class="slider__item-img",src=self.data[i].image.to(cstring))
             tdiv(class="slider__item-datas"):
@@ -86,16 +77,19 @@ proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem
   self.textControls = textControls
   self.autoplay = autoplay
   self.autoplayTime = autoplayTime
+  classes = @[fmt"{self.classNameItem}-first",fmt"{self.classNameItem}-previous",fmt"{self.classNameItem}-selected",fmt"{self.classNameItem}-next",fmt"{self.classNameItem}-last","","",""]
+
 
 proc onAttach(x: VComponent) =
   let self = Carousel(x)
-  
+  console.log "onAttach"
   var play = proc() = 
-    self.setCurrentState( cast[Element](self.carouselControlsContainer[1].dom), self.getCurrentState())
+    var state = self.getCurrentState()
+    console.log "play"
+    self.setCurrentState( cast[Element](self.carouselControlsContainer[1].dom), state)
+    redraw()
   if self.autoplay:
     discard window.setInterval(play,self.autoplayTime)
-    # markDirty(self)
-    # redraw()
   
 proc carousel*(nref:var Carousel): Carousel =
   nref = newComponent(Carousel, render,onAttach)
@@ -106,27 +100,23 @@ const defaultTextControls = @[cstring"<i class='fas fa-chevron-left'></i>", cstr
 const defaultCarouselControls = @[cstring"previous",cstring"next"]
 
 
-
 type 
-  State = tuple[selectedItem: Element, previousSelectedItem: Element,nextSelectedItem:Element,firstCarouselItem:Element,lastCarouselItem:Element,downCommingCarouselItem:Element,upCommingCarouselItem:Element,downIndex:int,upIndex:int] 
+  State = tuple[selectedItem: int, previousSelectedItem: int,nextSelectedItem:int,firstCarouselItem:int,lastCarouselItem:int,downIndex:int,upIndex:int] 
 
 proc getCurrentState*(self:Carousel): State = 
   let inner = self.expanded[0]
+  var selectedItem = classes.find( fmt"{self.classNameItem}-selected")
+  var previousSelectedItem = classes.find( fmt"{self.classNameItem}-previous")
+  var nextSelectedItem = classes.find( fmt"{self.classNameItem}-next")
+  var firstCarouselItem = classes.find( fmt"{self.classNameItem}-first")
+  var lastCarouselItem = classes.find( fmt"{self.classNameItem}-last")
 
-  var selectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-selected")
-  var previousSelectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-previous")
-  var nextSelectedItem = inner.dom.querySelector( fmt".{self.classNameItem}-next")
-  var firstCarouselItem = inner.dom.querySelector( fmt".{self.classNameItem}-first")
-  var lastCarouselItem = inner.dom.querySelector( fmt".{self.classNameItem}-last")
-  var indexLastCarouselItem = parseInt(lastCarouselItem.getAttribute(cstring"data-index"))
-  var indexFirstCarouselItem = parseInt(firstCarouselItem.getAttribute(cstring"data-index"))
+  var indexLastCarouselItem = lastCarouselItem
+  var indexFirstCarouselItem = firstCarouselItem
   var downIndex = indexFirstCarouselItem - 1
   var upIndex = indexLastCarouselItem + 1
-  var downCommingCarouselItem = inner.dom.querySelector(fmt".{self.classNameItem}[data-index='{downIndex}']")
-  var upCommingCarouselItem = inner.dom.querySelector(fmt".{self.classNameItem}[data-index='{upIndex}']")
-  return (selectedItem,previousSelectedItem,nextSelectedItem,firstCarouselItem,lastCarouselItem,downCommingCarouselItem,upCommingCarouselItem,downIndex,upIndex)
 
-
+  return (selectedItem,previousSelectedItem,nextSelectedItem,firstCarouselItem,lastCarouselItem,downIndex,upIndex)
 
 proc setControls*(self:Carousel): auto = 
   ## Construct the carousel controls
@@ -140,86 +130,82 @@ proc setControls*(self:Carousel): auto =
 
 proc setCurrentState*(self:Carousel, target:Element,state:State): auto = 
   ## Update the order state of the carousel with css classes
-  defer:
-    state.selectedItem.classList.remove( fmt"{self.classNameItem}-selected")
-    state.previousSelectedItem.classList.remove( fmt"{self.classNameItem}-previous")
-    state.nextSelectedItem.classList.remove( fmt"{self.classNameItem}-next")
-    state.firstCarouselItem.classList.remove( fmt"{self.classNameItem}-first")
-    state.lastCarouselItem.classList.remove( fmt"{self.classNameItem}-last")
+
+  for item in classes.mitems:
+    item = ""
+ 
   let inner = self.expanded[0]
   if target.className ==  fmt"{self.controlsClassName}-{self.carouselControls[1]}":
-    for item in inner:
-      cast[Element](item.dom).classList.remove( fmt"{self.classNameItem}-trigger-previous")
-      cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-trigger-next")
+    self.trigger = fmt"{self.classNameItem}-trigger-next"
     
     if state.upIndex == inner.len:
-      cast[Element](inner[0].dom).classList.add( fmt"{self.classNameItem}-last")
-      state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-first")
-      state.selectedItem.classList.add( fmt"{self.classNameItem}-previous")
-      state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-selected")
-      state.lastCarouselItem.classList.add( fmt"{self.classNameItem}-next")
+      classes[0] = fmt"{self.classNameItem}-last"
+      classes[state.previousSelectedItem] = fmt"{self.classNameItem}-first"
+      classes[state.selectedItem] = fmt"{self.classNameItem}-previous"
+      classes[state.nextSelectedItem] = fmt"{self.classNameItem}-selected"
+      classes[state.lastCarouselItem] = fmt"{self.classNameItem}-next"
     elif state.upIndex == 1:
-      cast[Element](inner[0].dom).classList.add( fmt"{self.classNameItem}-next")
-      cast[Element](inner[1].dom).classList.add( fmt"{self.classNameItem}-last")
-      state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-first")
-      state.selectedItem.classList.add( fmt"{self.classNameItem}-previous")
-      state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-selected")
-    elif state.upIndex ==  2:
-      cast[Element](inner[0].dom).classList.add( fmt"{self.classNameItem}-selected")
-      cast[Element](inner[1].dom).classList.add( fmt"{self.classNameItem}-next")
-      cast[Element](inner[2].dom).classList.add( fmt"{self.classNameItem}-last")
-      state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-first")
-      state.selectedItem.classList.add( fmt"{self.classNameItem}-previous")
+      classes[0] = fmt"{self.classNameItem}-next"
+      classes[1] = fmt"{self.classNameItem}-last"
+      classes[state.previousSelectedItem] = fmt"{self.classNameItem}-first"
+      classes[state.selectedItem] = fmt"{self.classNameItem}-previous"
+      classes[state.nextSelectedItem] = fmt"{self.classNameItem}-selected"
+    elif state.upIndex == 2:
+      classes[0] = fmt"{self.classNameItem}-selected"
+      classes[1] = fmt"{self.classNameItem}-next"
+      classes[2] = fmt"{self.classNameItem}-last"
+      classes[state.previousSelectedItem] = fmt"{self.classNameItem}-first"
+      classes[state.selectedItem] = fmt"{self.classNameItem}-previous"
     elif state.upIndex ==  3:
-      cast[Element](inner[0].dom).classList.add( fmt"{self.classNameItem}-previous")
-      cast[Element](inner[1].dom).classList.add( fmt"{self.classNameItem}-selected")
-      cast[Element](inner[2].dom).classList.add( fmt"{self.classNameItem}-next")
-      cast[Element](inner[3].dom).classList.add( fmt"{self.classNameItem}-last")
-      state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-first")
+      classes[0] = fmt"{self.classNameItem}-previous"
+      classes[1] = fmt"{self.classNameItem}-selected"
+      classes[2] = fmt"{self.classNameItem}-next"
+      classes[3] = fmt"{self.classNameItem}-last"
+      classes[state.previousSelectedItem] = fmt"{self.classNameItem}-first"
     elif state.upIndex ==  4:
       self.setInitialState()
     else:
-      state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-first")
-      state.selectedItem.classList.add( fmt"{self.classNameItem}-previous")
-      state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-selected")
-      state.lastCarouselItem.classList.add( fmt"{self.classNameItem}-next")
-      state.upCommingCarouselItem.classList.add( fmt"{self.classNameItem}-last")
+      classes[state.previousSelectedItem] = fmt"{self.classNameItem}-first"
+      classes[state.selectedItem] = fmt"{self.classNameItem}-previous"
+      classes[state.nextSelectedItem] = fmt"{self.classNameItem}-selected"
+      classes[state.lastCarouselItem] = fmt"{self.classNameItem}-next"
+      classes[state.upIndex] = fmt"{self.classNameItem}-last"
   else:
-    for item in inner: 
-      cast[Element](item.dom).classList.remove( fmt"{self.classNameItem}-trigger-next")
-      cast[Element](item.dom).classList.add( fmt"{self.classNameItem}-trigger-previous")
+    self.trigger = fmt"{self.classNameItem}-trigger-previous"
 
     if state.downIndex == - 1:
-        cast[Element](inner[inner.len - 1].dom).classList.add( fmt"{self.classNameItem}-first")
-        state.firstCarouselItem.classList.add( fmt"{self.classNameItem}-previous")
-        state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-selected")
-        state.selectedItem.classList.add( fmt"{self.classNameItem}-next")
-        state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-last")
+        classes[classes.len - 1] = fmt"{self.classNameItem}-first"
+        classes[state.firstCarouselItem] = fmt"{self.classNameItem}-previous"
+        classes[state.previousSelectedItem] = fmt"{self.classNameItem}-selected"
+        classes[state.selectedItem] = fmt"{self.classNameItem}-next"
+        classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
     elif state.downIndex == inner.len - 2:
-        cast[Element](inner[inner.len - 1].dom).classList.add( fmt"{self.classNameItem}-previous")
-        cast[Element](inner[inner.len - 2].dom).classList.add( fmt"{self.classNameItem}-first")
-        state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-selected")
-        state.selectedItem.classList.add( fmt"{self.classNameItem}-next")
-        state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-last")
+        classes[classes.len - 1] = fmt"{self.classNameItem}-previous"
+        classes[classes.len - 2] = fmt"{self.classNameItem}-first"
+        classes[state.previousSelectedItem] = fmt"{self.classNameItem}-selected"
+        classes[state.selectedItem] = fmt"{self.classNameItem}-next"
+        classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
     elif state.downIndex == inner.len - 3:
-        cast[Element](inner[inner.len - 1].dom).classList.add( fmt"{self.classNameItem}-selected")
-        cast[Element](inner[inner.len - 2].dom).classList.add( fmt"{self.classNameItem}-previous")
-        cast[Element](inner[inner.len - 3].dom).classList.add( fmt"{self.classNameItem}-first")
-        state.selectedItem.classList.add( fmt"{self.classNameItem}-next")
-        state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-last")
+        classes[classes.len - 1] = fmt"{self.classNameItem}-selected"
+        classes[classes.len - 2] = fmt"{self.classNameItem}-previous"
+        classes[classes.len - 3] = fmt"{self.classNameItem}-first"
+        classes[state.selectedItem] = fmt"{self.classNameItem}-next"
+        classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
     elif state.downIndex == inner.len - 4:
-        cast[Element](inner[inner.len - 1].dom).classList.add( fmt"{self.classNameItem}-next")
-        cast[Element](inner[inner.len - 2].dom).classList.add( fmt"{self.classNameItem}-selected")
-        cast[Element](inner[inner.len - 3].dom).classList.add( fmt"{self.classNameItem}-previous")
-        cast[Element](inner[inner.len - 4].dom).classList.add( fmt"{self.classNameItem}-first")
-        state.selectedItem.classList.add( fmt"{self.classNameItem}-next")
-        state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-last")
+        classes[classes.len - 1] = fmt"{self.classNameItem}-next"
+        classes[classes.len - 2] = fmt"{self.classNameItem}-selected"
+        classes[classes.len - 3] = fmt"{self.classNameItem}-previous"
+        classes[classes.len - 4] = fmt"{self.classNameItem}-first"
+        classes[state.selectedItem] = fmt"{self.classNameItem}-next"
+        classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
     else:
-      state.downCommingCarouselItem.classList.add( fmt"{self.classNameItem}-first")
-      state.firstCarouselItem.classList.add( fmt"{self.classNameItem}-previous")
-      state.previousSelectedItem.classList.add( fmt"{self.classNameItem}-selected")
-      state.selectedItem.classList.add( fmt"{self.classNameItem}-next")
-      state.nextSelectedItem.classList.add( fmt"{self.classNameItem}-last")
+      classes[state.downIndex] = fmt"{self.classNameItem}-first"
+      classes[state.firstCarouselItem] = fmt"{self.classNameItem}-previous"
+      classes[state.previousSelectedItem] = fmt"{self.classNameItem}-selected"
+      classes[state.selectedItem] = fmt"{self.classNameItem}-next"
+      classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
+  self.markDirty()
+  console.log $classes
 
 proc useControls*(self:Carousel) = 
   for item in self.carouselControlsContainer:

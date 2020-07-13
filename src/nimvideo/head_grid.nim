@@ -1,9 +1,9 @@
-import karax / [karax, karaxdsl, vdom, kdom, compact]
+import karax / [karax, karaxdsl, vdom, kdom, compact,reactive]
 import jsffi
 import jsconsole
 
 type HeadGrid* = ref object of VComponent
-  data*:seq[JsObject]
+  data*:RSeq[JsObject]
 
 proc render(x: VComponent):VNode =
   let self = HeadGrid(x)
@@ -21,4 +21,5 @@ proc render(x: VComponent):VNode =
 
 proc headGrid*(nref:var HeadGrid): HeadGrid =
   nref = newComponent(HeadGrid, render)
-  nref 
+  nref.data = newRSeq[JsObject]()
+  nref

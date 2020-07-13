@@ -9,7 +9,7 @@ import jsffi
 import nimvideo/head_grid
 import nimvideo/two_row_grid
 import nimvideo/one_row_grid
-
+import karax / [reactive]
 const url = "https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e5805a1615e68abd4384827ae323bcf1/Hero_Video.mp4"
 
 # proc slice(e: JsObject, startindex: int = 0, endindex: int = e.size):JsObject{.importcpp: "#.slice(#,#)".}
@@ -68,4 +68,5 @@ proc createDom(data: RouterData): VNode =
           text "h2"
         oneRowGrid(nref = refC)
 
-setRenderer createDom,clientPostRenderCallback=post
+when isMainModule:
+  setRenderer createDom,clientPostRenderCallback=post

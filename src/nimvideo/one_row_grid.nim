@@ -1,9 +1,9 @@
-import karax / [karax, karaxdsl, vdom, kdom, compact]
+import karax / [karax, karaxdsl, vdom, kdom, compact,reactive]
 import jsffi
 import jsconsole
 
 type OneRowGrid* = ref object of VComponent
-  data*:seq[JsObject]
+  data*:RSeq[JsObject]
 
 proc render(x: VComponent):VNode =
   let self = OneRowGrid(x)
@@ -17,4 +17,5 @@ proc render(x: VComponent):VNode =
 
 proc oneRowGrid*(nref:var OneRowGrid): OneRowGrid =
   nref = newComponent(OneRowGrid, render)
-  nref 
+  nref.data = newRSeq[JsObject]()
+  nref
