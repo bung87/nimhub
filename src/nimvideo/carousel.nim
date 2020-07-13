@@ -7,17 +7,16 @@ import jsconsole
 
 proc querySelector(ele:any,q:cstring):Element {.importcpp:"#.querySelector(@)",nodecl.}
 
-
-
 type Switch {.pure.} = enum 
   next,prev
+
 type Carousel* = ref object of VComponent
   classNameItem*:cstring
   carouselControls:seq[cstring]
   controlsClassName:cstring
   textControls:seq[cstring]
   autoplay:bool
-  classes:RSeq[string]
+  classes:seq[string]
   displayControls:bool
   data*:seq[JsObject]
   autoplayTime:int
@@ -49,7 +48,7 @@ proc setInitialState*(self:Carousel) =
 proc render(x: VComponent): VNode =
   
   let self = Carousel(x)
-  proc itemRender(cls:cstring,index:int):VNode {.track.} = 
+  proc itemRender(cls:string,index:int):VNode  = 
     result = buildHtml(tdiv(class=fmt"slider__item {self.trigger} {cls}", data-index= $index )):
       tdiv(class= "slider__item-container"):
         img(class= "slider__item-img",src = self.data[index].image.to(cstring))
@@ -60,8 +59,9 @@ proc render(x: VComponent): VNode =
   result = buildHtml(tdiv(class="slider")):
     # power of 4
     if self.data.len > 0:
-      # for i in 0..7:
-      vmapIt2(self.classes, tdiv(class="slider__inner"), itemRender(it.cstring,index))
+      tdiv(class="slider__inner"):
+        for i in 0..7:
+          itemRender(self.classes[i],i)
 
     if self.displayControls:
       tdiv(class="slider__controls"):
@@ -79,7 +79,7 @@ proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem
   self.textControls = textControls
   self.autoplay = autoplay
   self.autoplayTime = autoplayTime
-  self.classes =  newRSeq[string] @[fmt"{self.classNameItem}-first",fmt"{self.classNameItem}-previous",fmt"{self.classNameItem}-selected",fmt"{self.classNameItem}-next",fmt"{self.classNameItem}-last","","",""]
+  self.classes =  @[fmt"{self.classNameItem}-first",fmt"{self.classNameItem}-previous",fmt"{self.classNameItem}-selected",fmt"{self.classNameItem}-next",fmt"{self.classNameItem}-last","","",""]
 
 
 proc onAttach(x: VComponent) =
@@ -209,9 +209,8 @@ proc setCurrentState*(self:Carousel, target:Switch,state:State): auto =
       self.classes[state.selectedItem] = fmt"{self.classNameItem}-next"
       self.classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
   self.markDirty()
+  runDiff(kxi,self.expanded,render(self))
   console.log self.classes
-
-
 
 proc onTouch*(self:Carousel): auto = 
   ## touch action
