@@ -7,8 +7,10 @@ type TwoRowGrid* = ref object of VComponent
 
 proc renderItem(x: TwoRowGrid,i:int):VNode = 
   result = buildHtml(tdiv(class="pure-u-4-24")):
-    img(class="pure-img",src=x.data[i].image.to(cstring))
-    img(class="pure-img",src=x.data[i+1].image.to(cstring))
+    a(href=x.data[i].url.to(cstring)):
+      img(class="pure-img",src=x.data[i].image.to(cstring))
+    a(href=x.data[i+1].url.to(cstring)):
+      img(class="pure-img",src=x.data[i+1].image.to(cstring))
 
 proc render*(x: VComponent):VNode =
   let self = TwoRowGrid(x)

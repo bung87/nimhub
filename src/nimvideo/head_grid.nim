@@ -7,14 +7,17 @@ type HeadGrid* = ref object of VComponent
 
 proc render(x: VComponent):VNode =
   let self = HeadGrid(x)
-  result = buildHtml(tdiv(class="pure-g")):
+  result = buildHtml(tdiv(class="pure-g stretch")):
     if self.data.len > 0:
-      tdiv(class="pure-u-8-24"):
-        img(class="pure-img",src=self.data[0].image.to(cstring) )
+      tdiv(class="pure-u-8-24 "):
+        a(href=self.data[0].url.to(cstring) ):
+          img(class="pure-img",src=self.data[0].image.to(cstring) )
       for i in countup(1,8,2):
         tdiv(class="pure-u-4-24"):
-          img(class="pure-img",src=self.data[i].image.to(cstring))
-          img(class="pure-img",src=self.data[i+1].image.to(cstring))
+          a(href=self.data[i].url.to(cstring) ):
+            img(class="pure-img half",src=self.data[i].image.to(cstring))
+          a(href=self.data[i+1].url.to(cstring) ):
+            img(class="pure-img half",src=self.data[i+1].image.to(cstring))
     else:
       tdiv()
 

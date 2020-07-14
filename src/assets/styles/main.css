@@ -58,3 +58,17 @@ body{
 video{
     width:100%;
 }
+
+.stretch{
+    display: flex;
+    align-items: stretch;
+}
+
+.half {
+    height:50%;
+}
+
+.pure-img{
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}

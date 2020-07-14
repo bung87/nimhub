@@ -34,6 +34,10 @@ proc myList(self:AutocompleteComponent): VNode =
           renderItem(item)
 
 
+var listStyle = style(
+    (StyleAttr.position, cstring"fixed"),
+    
+  )
 
 proc render(x: VComponent): VNode  =
   
@@ -43,37 +47,47 @@ proc render(x: VComponent): VNode  =
     (StyleAttr.display, cstring"inline-block"),
   )
 
-  let style1 = style(
-    (StyleAttr.position, cstring"fixed"),
-    (StyleAttr.display, cstring"none"),
-  )
+  
+  if self.choices.len > 0:
+    listStyle =  listStyle.merge style( (StyleAttr.display, cstring"block"),(StyleAttr.visibility, cstring"visible") )
+  else:
+    
+    listStyle = listStyle.merge style( (StyleAttr.display, cstring"none"),(StyleAttr.visibility, cstring"hidden") )
 
   self.list = myList(self)
   result = buildHtml(span(style=style)):
     self.inp
-    tdiv(style=style1,id="resultList"):
+    tdiv(style=listStyle,id="resultList"):
       tdiv(class="pure-menu"):
         self.list
         # vmapIt(self.choices, ul(class="pure-menu-list",style=noFloat.merge(bg)), renderItem(it))
-        
-        #   # vmapIt(self.choices, li(class="pure-menu-item",style=noFloat), renderItem(it))
+
 
 proc runDiff*(self:AutocompleteComponent) = 
-  runDiff(kxi,self.list,myList(self))
+  if self.expanded != nil:
+    runDiff(kxi,self.expanded,render(self))
 
 proc onAttach(x:VComponent) = 
   let self = AutocompleteComponent(x)
   
-  
   proc pos(ev: Event; n: VNode) = 
-    document.getElementById("resultList").style.display = cstring"block"
-    document.getElementById("resultList").style.width = cstring cast[JsObject](self.dom).getBoundingClientRect().width.to(cstring) & "px"
-    document.getElementById("resultList").style.left = cstring cast[JsObject](self.dom).getBoundingClientRect().left.to(cstring) & "px"
-    document.getElementById("resultList").style.top = cstring cast[JsObject](self.dom.parentNode).getBoundingClientRect().height.to(cstring) & "px"
+    console.log self.dom.parentNode.getBoundingClientRect().height
+    var list = getVNodeById("resultList",kxi)
+    if self.choices.len > 0:
+      listStyle = listStyle.merge style(  (StyleAttr.display, cstring"block"),(StyleAttr.visibility, cstring"visible"), )
+      list.dom.applyStyle listStyle
+    listStyle = listStyle.merge style( 
+      (StyleAttr.width, cstring cast[JsObject](self.dom).getBoundingClientRect().width.to(cstring) & "px"),
+      (StyleAttr.left, cstring cast[JsObject](self.dom).getBoundingClientRect().left.to(cstring) & "px") ,
+      (StyleAttr.top, cstring cast[JsObject](self.dom.parentNode).getBoundingClientRect().height.to(cstring) & "px") ,
+    )
+    list.dom.applyStyle listStyle
 
   proc onblur(ev: Event; n: VNode) = 
-    document.getElementById("resultList").style.display = "none"
-
+    var list = getVNodeById("resultList",kxi)
+    list.style = list.style.merge style( (StyleAttr.display, cstring"none"),(StyleAttr.visibility, cstring"hidden") )
+    list.dom.applyStyle  list.style
+  
   self.inp.addEventListener(EventKind.onfocus,pos )
   self.inp.addEventListener(EventKind.onblur,onblur )
 

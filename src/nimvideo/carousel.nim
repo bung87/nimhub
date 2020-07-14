@@ -1,8 +1,8 @@
 {.experimental: "codeReordering".}
 import strformat
 include karax / prelude
-import karax/[kdom,vdom,reactive]
-import jsffi except setInterval
+import karax/[kdom,vdom]
+import jsffi
 import jsconsole
 
 proc querySelector(ele:any,q:cstring):Element {.importcpp:"#.querySelector(@)",nodecl.}
@@ -19,6 +19,7 @@ type Carousel* = ref object of VComponent
   classes:seq[string]
   displayControls:bool
   data*:seq[JsObject]
+  interval:ref Interval
   autoplayTime:int
   trigger:string
 
@@ -41,15 +42,13 @@ proc setInitialState*(self:Carousel) =
       else:
         discard
     inc index
-  self.markDirty()
-  redraw()
 
 
 proc render(x: VComponent): VNode =
   
   let self = Carousel(x)
   proc itemRender(cls:string,index:int):VNode  = 
-    result = buildHtml(tdiv(class=fmt"slider__item {self.trigger} {cls}", data-index= $index )):
+    result = buildHtml(a(class=fmt"slider__item {self.trigger} {cls}", data-index= $index,href=self.data[index].url.to(cstring) )):
       tdiv(class= "slider__item-container"):
         img(class= "slider__item-img",src = self.data[index].image.to(cstring))
       tdiv(class= "slider__item-datas"):
@@ -84,18 +83,18 @@ proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem
 
 proc onAttach(x: VComponent) =
   let self = Carousel(x)
-  console.log "onAttach"
   self.onTouch()
   var play = proc() = 
     var state = self.getCurrentState()
-    console.log "play"
     self.setCurrentState( Switch.next , state)
-    redraw()
   if self.autoplay:
-    discard window.setInterval(play,self.autoplayTime)
+    self.interval = window.setInterval(play,self.autoplayTime)
   
+proc onDetach(x:VComponent) = 
+  let self = Carousel(x)
+  window.clearInterval(self.interval)
 proc carousel*(nref:var Carousel): Carousel =
-  nref = newComponent(Carousel, render,onAttach)
+  nref = newComponent(Carousel, render,onAttach,onDetach)
   initCarousel nref
   nref
 
@@ -106,14 +105,6 @@ const defaultCarouselControls = @[cstring"previous",cstring"next"]
 type 
   State = tuple[selectedItem: int, previousSelectedItem: int,nextSelectedItem:int,firstCarouselItem:int,lastCarouselItem:int,downIndex:int,upIndex:int] 
 
-proc find*[T](a: RSeq[T], item: T): int {.inline.}=
-  ## Returns the first index of `item` in `a` or -1 if not found. This requires
-  ## appropriate `items` and `==` operations to work.
-  result = 0
-  for i in items(a.s):
-    if i == item: return
-    inc(result)
-  result = -1
 
 proc getCurrentState*(self:Carousel): State = 
   let inner = self.expanded[0]
@@ -131,12 +122,12 @@ proc getCurrentState*(self:Carousel): State =
   return (selectedItem,previousSelectedItem,nextSelectedItem,firstCarouselItem,lastCarouselItem,downIndex,upIndex)
 
 
-proc setCurrentState*(self:Carousel, target:Switch,state:State): auto = 
+proc setCurrentState*(self:Carousel, target:Switch,state:State) = 
   ## Update the order state of the carousel with css self.classes
-  var i = 0
-  while i < self.classes.len :
-    self.classes[i] = ""
-    inc i
+  if self.classes.len == 0:
+    return 
+  for item in self.classes.mitems:
+    item = ""
  
   let inner = self.expanded[0]
   if target == Switch.next:
@@ -208,11 +199,14 @@ proc setCurrentState*(self:Carousel, target:Switch,state:State): auto =
       self.classes[state.previousSelectedItem] = fmt"{self.classNameItem}-selected"
       self.classes[state.selectedItem] = fmt"{self.classNameItem}-next"
       self.classes[state.nextSelectedItem] = fmt"{self.classNameItem}-last"
-  self.markDirty()
-  runDiff(kxi,self.expanded,render(self))
-  console.log self.classes
 
-proc onTouch*(self:Carousel): auto = 
+  for index,cls in self.classes:
+    try:
+      inner[index].dom.class = fmt"{self.classNameItem} {cls}" 
+    except:
+      discard 
+
+proc onTouch*(self:Carousel) = 
   ## touch action
   var touchstartX = 0.0
   var touchendX = 0.0

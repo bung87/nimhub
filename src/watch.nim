@@ -31,7 +31,7 @@ const selectedCss = """
 
 proc build(name: string, selectedCss: string, run: bool) =
   echo("Building...")
-  discard execCmd("nim js -d:release --out:" & name & ".js " & "src/" & name & ".nim")
+  discard execCmd("nim js --out:" & name & ".js " & "src/" & name & ".nim")
   let dest = name & ".html"
   writeFile(dest, html % [name, selectedCss])
   if run: openDefaultBrowser("http://localhost:5000")
