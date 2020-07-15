@@ -93,10 +93,14 @@ proc onAttach(x: VComponent) =
 proc onDetach(x:VComponent) = 
   let self = Carousel(x)
   window.clearInterval(self.interval)
+
 proc carousel*(nref:var Carousel): Carousel =
-  nref = newComponent(Carousel, render,onAttach,onDetach)
-  initCarousel nref
-  nref
+  if nref == nil:
+    nref = newComponent(Carousel, render,onAttach,onDetach)
+    initCarousel nref
+    nref
+  else:
+    nref
 
 const defaultTextControls = @[cstring"<i class='fas fa-chevron-left'></i>", cstring"<i class='fas fa-chevron-right'></i>"]
 const defaultCarouselControls = @[cstring"previous",cstring"next"]

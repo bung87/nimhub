@@ -3,7 +3,7 @@ import jsffi
 import jsconsole
 
 type HeadGrid* = ref object of VComponent
-  data*:RSeq[JsObject]
+  data*:seq[JsObject]
 
 proc render(x: VComponent):VNode =
   let self = HeadGrid(x)
@@ -23,6 +23,9 @@ proc render(x: VComponent):VNode =
 
 
 proc headGrid*(nref:var HeadGrid): HeadGrid =
-  nref = newComponent(HeadGrid, render)
-  nref.data = newRSeq[JsObject]()
-  nref
+  if nref == nil:
+    nref = newComponent(HeadGrid, render)
+    nref.data = newSeq[JsObject]()
+    nref
+  else:
+    nref

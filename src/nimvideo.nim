@@ -39,7 +39,7 @@ var refA:HeadGrid
 var refB:TwoRowGrid
 var refC:OneRowGrid
 var refCarousel:Carousel
-
+console.log refC.addr
 proc post (routerData: RouterData)  =
   proc cb(r:XMLHttpRequest) =
     var data = fromJSON[seq[JsObject] ] r.response
@@ -60,7 +60,8 @@ proc post (routerData: RouterData)  =
     refA.markDirty()
     refB.markDirty()
     refC.markDirty()
-    console.log refC
+    console.log refC.data
+    console.log refC.addr
     refCarousel.markDirty()
     redraw()
     # replaceById "ROOT",createDom(routerData )

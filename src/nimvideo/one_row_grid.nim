@@ -3,7 +3,7 @@ import jsffi
 import jsconsole
 
 type OneRowGrid* = ref object of VComponent
-  data*:RSeq[JsObject]
+  data*:seq[JsObject]
 
 proc render(x: VComponent):VNode =
   let self = OneRowGrid(x)
@@ -17,6 +17,9 @@ proc render(x: VComponent):VNode =
       tdiv()
 
 proc oneRowGrid*(nref:var OneRowGrid): OneRowGrid =
-  nref = newComponent(OneRowGrid, render)
-  nref.data = newRSeq[JsObject]()
-  nref
+  if nref == nil:
+    nref = newComponent(OneRowGrid, render)
+    nref.data = newSeq[JsObject]()
+    nref
+  else:
+    nref

@@ -3,7 +3,7 @@ import jsffi
 import jsconsole
 
 type TwoRowGrid* = ref object of VComponent
-  data*:RSeq[JsObject]
+  data*:seq[JsObject]
 
 proc renderItem(x: TwoRowGrid,i:int):VNode = 
   result = buildHtml(tdiv(class="pure-u-4-24")):
@@ -22,6 +22,9 @@ proc render*(x: VComponent):VNode =
       tdiv()
 
 proc twoRowGrid*(nref:var TwoRowGrid): TwoRowGrid =
-  nref = newComponent(TwoRowGrid, render)
-  nref.data = newRSeq[JsObject]()
-  nref
+  if nref == nil:
+    nref = newComponent(TwoRowGrid, render)
+    nref.data = newSeq[JsObject]()
+    nref
+  else:
+    nref
