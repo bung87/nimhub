@@ -129,8 +129,8 @@ proc ajax*(meth, url: cstring; cont: proc (httpStatus: int; response: cstring);h
 
 proc ajax*(meth, url: cstring; headers: openarray[(cstring, cstring)] = [];
           data: cstring = cstring"";
-          useBinary: bool = false,
-          blob: Blob = nil):Future[XMLHttpRequest] = 
+          useBinary: bool = false;
+          blob: Blob = nil): Future[XMLHttpRequest] = 
   var this {.importc: "this".}: XMLHttpRequest
   var promise = newPromise() do (resolve: proc(response: XMLHttpRequest)):
     let ajax = newXMLHttpRequest()
@@ -147,9 +147,9 @@ proc ajax*(meth, url: cstring; headers: openarray[(cstring, cstring)] = [];
       ajax.send(blob)
     else:
       ajax.send(data)
-  # proc thenImpl(that:JsObject,done:proc(resp:XMLHttpRequest):PromiseJs):JsObject =
-  #   return cast[JsObject](that).then(done)
-  # cast[JsObject](promise).then = thenImpl
   return promise
 
-# proc then*(r: Future[XMLHttpRequest]; cb: proc(resp:XMLHttpRequest)){.importcpp: "#.then(#)",discardable.}
+proc then*[T](r: Future[T]; fullfill: proc(resp:T); reject: (proc(reason:Exception)) = nil ) {.importcpp: "#.then(#)",discardable.}
+
+# proc then*[T,P](r: Future[T]; fullfill: proc(resp:T):Future[P], reject: (proc(reason:Exception)) = nil ):Future[P]{.importcpp: "#.then(#)",discardable.}
+proc catch*[T](r: Future[T]; cb: proc(reason:Exception) ): Future[void] {.importcpp: "#.catch(#)",discardable.}

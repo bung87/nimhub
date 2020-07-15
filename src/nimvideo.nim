@@ -64,8 +64,10 @@ proc post (routerData: RouterData)  =
     refCarousel.markDirty()
     redraw()
     # replaceById "ROOT",createDom(routerData )
-   
-  ajax(cstring"get",cstring"http://api.tvmaze.com/shows",cb)
+
+  ajax(cstring"get",cstring"http://api.tvmaze.com/shows").then proc(r:XMLHttpRequest) =
+    console.log r
+
 
 proc createDom(data: RouterData): VNode =
   console.log data.hashPart
