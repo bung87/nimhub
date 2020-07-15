@@ -131,6 +131,7 @@ proc ajax*(meth, url: cstring; headers: openarray[(cstring, cstring)] = [];
           data: cstring = cstring"";
           useBinary: bool = false;
           blob: Blob = nil): Future[XMLHttpRequest] = 
+  let headers = @headers
   var this {.importc: "this".}: XMLHttpRequest
   var promise = newPromise() do (resolve: proc(response: XMLHttpRequest)):
     let ajax = newXMLHttpRequest()

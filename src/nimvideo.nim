@@ -41,8 +41,8 @@ var refC:OneRowGrid
 var refCarousel:Carousel
 
 proc post (routerData: RouterData)  =
-  proc cb(httpStatus: int; response: cstring) =
-    var data = fromJSON[seq[JsObject] ] response
+  proc cb(r:XMLHttpRequest) =
+    var data = fromJSON[seq[JsObject] ] r.response
     for index,item in data:
       var obj = newJsObject()
       if index != 0:
@@ -65,8 +65,7 @@ proc post (routerData: RouterData)  =
     redraw()
     # replaceById "ROOT",createDom(routerData )
 
-  ajax(cstring"get",cstring"http://api.tvmaze.com/shows").then proc(r:XMLHttpRequest) =
-    console.log r
+  ajax(cstring"get",cstring"http://api.tvmaze.com/shows").then cb
 
 
 proc createDom(data: RouterData): VNode =
