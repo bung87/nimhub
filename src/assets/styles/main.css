@@ -16,7 +16,7 @@ body{
 }
 .pure-menu .pure-inputm,.pure-menu .pure-input-rounded{
     vertical-align: top;
-    transform: translateY(50%);
+    /* transform: translateY(50%); */
     
     padding: .2em;
     background-color: #3c4053;
@@ -35,7 +35,17 @@ body{
 @media (min-width: 1200px){
  .pure-menu input {
     margin-top: -8px;
-    }
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+ }
+ .pure-menu input:focus {
+    transition: padding  0.3s cubic-bezier(0.4, 0, 1, 1);
+    border-width:0.2px !important;
+    padding:.2em 5em;
+ }
+}
+.pure-menu input{
+    vertical-align: text-top;
 }
 .pure-menu input:focus, .pure-menu textarea:focus,.pure-menu  keygen:focus, .pure-menu select:focus {
     border-color:#ffe220;
@@ -43,7 +53,7 @@ body{
     border-width: 2px;
     border-radius:3px;
     outline:none;
-    text-align: left;
+    /* text-align: left; */
 }
 
 .pure-img{

@@ -11,9 +11,8 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.3.5"
-requires "karax"
-requires "jester#head"
-# requires "regex#head"
+requires "https://github.com/bung87/karax#static_server"
+
 
 task watch,"watch":
-  exec "nim c -d:stats -r --threads:on src/watch.nim"
+  exec "karun -r -w --css:src/css.html src/nimvideo.nim"

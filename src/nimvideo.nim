@@ -5,19 +5,16 @@ import nimvideo/carousel
 import nimvideo/mediaplayer
 import jsconsole
 import nimvideo/najax
-import asyncjs
 import jsffi
 import nimvideo/head_grid
 import nimvideo/two_row_grid
 import nimvideo/one_row_grid
-import karax / [reactive,kdom]
-import future
+import karax / [kdom]
+
 const url = "https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e5805a1615e68abd4384827ae323bcf1/Hero_Video.mp4"
 
-# ------------------ Init handling -----------------------------------
 
 proc replaceById*(id: cstring = "ROOT";newTree: VNode; ) =
-
   let x = getElementById(id)
   newTree.id = id
   x.parentNode.replaceChild(newTree.toDom true, x)
@@ -28,18 +25,15 @@ proc setInitializer*(initializer: proc (data: RouterData): VNode;
   var onhashChange {.importc: "window.onhashchange".}: proc()
   var hashPart {.importc: "window.location.hash".}: cstring
 
-  # setWindowOnload proc (ev: Event;target: VNode) =
-  #   replaceById root, initializer(RouterData(hashPart:hashPart) )
   onhashchange = proc () =
     replaceById root, initializer(RouterData(hashPart:hashPart) )
-
-# proc slice(e: JsObject, startindex: int = 0, endindex: int = e.size):JsObject{.importcpp: "#.slice(#,#)".}
 
 var refA:HeadGrid
 var refB:TwoRowGrid
 var refC:OneRowGrid
 var refCarousel:Carousel
-console.log refC.addr
+var refHead:Thead
+
 proc post (routerData: RouterData)  =
   proc cb(r:XMLHttpRequest) =
     var data = fromJSON[seq[JsObject] ] r.response
@@ -56,28 +50,21 @@ proc post (routerData: RouterData)  =
       refA.data.add obj
       refB.data.add obj
       refC.data.add obj
-      refCarousel.data.add obj
+      if refCarousel != nil:
+        refCarousel.data.add obj
+        refCarousel.markDirty()
     refA.markDirty()
     refB.markDirty()
     refC.markDirty()
-    console.log refC.data
-    console.log refC.addr
-    refCarousel.markDirty()
+    
     redraw()
-    # replaceById "ROOT",createDom(routerData )
-
-  ajax(cstring"get",cstring"http://api.tvmaze.com/shows").then cb
+  if routerData.hashPart == "":
+    ajax(cstring"get",cstring"http://api.tvmaze.com/shows").then cb
 
 
 proc createDom(data: RouterData): VNode =
-  console.log data.hashPart
-  # document.addEventListener("click", (ev: Event) => redraw())
-  if data.hashPart == "":
-    console.log "post"
-    post(data)
   result = buildHtml(tdiv):
-    theader()
-    
+    theader(nref = refHead)
     if data.hashPart == "#/video":
       tdiv(class="content"):
         tdiv(class="pure-g"):
@@ -98,11 +85,7 @@ proc createDom(data: RouterData): VNode =
         oneRowGrid(nref = refC)
 
 when isMainModule:
-  setRenderer createDom#,clientPostRenderCallback=post
+  setRenderer createDom,clientPostRenderCallback=post
   setInitializer proc(data: RouterData):VNode =
     result = createDom(data )
-    
-    
-    # runDiff(kxi,result.expanded,result)
-    
-    
+

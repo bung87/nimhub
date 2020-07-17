@@ -44,6 +44,7 @@ proc render(x: VComponent): VNode  =
   let self = AutocompleteComponent(x)
   
   let style = style(
+    (StyleAttr.marginTop,cstring"17px"),
     (StyleAttr.display, cstring"inline-block"),
   )
 
@@ -71,18 +72,20 @@ proc onAttach(x:VComponent) =
   let self = AutocompleteComponent(x)
   
   proc pos(ev: Event; n: VNode) = 
-    console.log self.dom.parentNode.getBoundingClientRect().height
+
     var list = getVNodeById("resultList",kxi)
     if self.choices.len > 0:
-      listStyle = listStyle.merge style(  (StyleAttr.display, cstring"block"),(StyleAttr.visibility, cstring"visible"), )
-      list.dom.applyStyle listStyle
-    listStyle = listStyle.merge style( 
-      (StyleAttr.width, cstring cast[JsObject](self.dom).getBoundingClientRect().width.to(cstring) & "px"),
-      (StyleAttr.left, cstring cast[JsObject](self.dom).getBoundingClientRect().left.to(cstring) & "px") ,
-      (StyleAttr.top, cstring cast[JsObject](self.dom.parentNode).getBoundingClientRect().height.to(cstring) & "px") ,
-    )
-    list.dom.applyStyle listStyle
-
+      proc resetStyle() =
+        listStyle = listStyle.merge style(  (StyleAttr.display, cstring"block"),(StyleAttr.visibility, cstring"visible"), )
+        list.dom.applyStyle listStyle
+        listStyle = listStyle.merge style( 
+          (StyleAttr.width, cstring cast[JsObject](self.dom).getBoundingClientRect().width.to(cstring) & "px"),
+          (StyleAttr.left, cstring cast[JsObject](self.dom).getBoundingClientRect().left.to(cstring) & "px") ,
+          (StyleAttr.top, cstring cast[JsObject](self.dom.parentNode).getBoundingClientRect().height.to(cstring) & "px") ,
+        )
+        list.dom.applyStyle listStyle
+      discard setTimeout( resetStyle,500)
+    
   proc onblur(ev: Event; n: VNode) = 
     var list = getVNodeById("resultList",kxi)
     list.style = list.style.merge style( (StyleAttr.display, cstring"none"),(StyleAttr.visibility, cstring"hidden") )
@@ -92,7 +95,7 @@ proc onAttach(x:VComponent) =
   self.inp.addEventListener(EventKind.onblur,onblur )
 
 
-proc autocomplete*(inp: var VNode;onselection: proc(s: cstring),nref:var AutocompleteComponent): AutocompleteComponent =
+proc autocomplete*(inp: var VNode;nref:var AutocompleteComponent): AutocompleteComponent =
   
   # inp.removeEventListener(EventKind.onfocus,pos )
   nref = newComponent(AutocompleteComponent, render,onAttach)

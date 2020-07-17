@@ -9,8 +9,6 @@ type Thead* = ref object of VComponent
   searchBox*:VNode
   autoRef*:AutocompleteComponent
 
-var onSelect = proc (s: cstring) = echo "now "
-
 
 proc render(x:VComponent):VNode = 
   let self = Thead(x)
@@ -21,8 +19,7 @@ proc render(x:VComponent):VNode =
     nav(class="pure-menu pure-menu-horizontal pure-menu-scrollable",style = style1):
       tdiv(class="nav-content",style = style1):
         a(href="/",class="pure-menu-heading pure-menu-link site-logo-container"):
-          img(class="site-logo",src="/images/logo.svg",height="28",alt="Nim")
-        autocomplete(self.searchBox, onSelect,nref=self.autoRef)
+          img(class="site-logo",src="/public/images/logo.svg",height="28",alt="Nim")
         ul(class="pure-menu-list"):
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link"):
@@ -30,6 +27,8 @@ proc render(x:VComponent):VNode =
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link"):
               text "Blog"
+        autocomplete(self.searchBox,nref=self.autoRef)
+        
       tdiv(class="menu-fade")
 
 proc onAttach(x:VComponent) = 
@@ -41,7 +40,8 @@ proc onAttach(x:VComponent) =
     for item in data:
       self.autoRef.choices.add( item.show.name)
     self.autoRef.runDiff()
-
+    # self.autoRef.markDirty()
+    # redraw()
 
   proc onkeyuplater(ev: kdom.Event; n: VNode) =
     ajax(cstring"get",cstring"http://api.tvmaze.com/search/shows?" & cstring"q=" & ev.target.value,cb)
@@ -51,6 +51,9 @@ proc onAttach(x:VComponent) =
 proc onDetach(x:VComponent) = 
   let self = Thead(x)
 
-proc theader*():Thead =
-  result = newComponent(Thead, render,onAttach,onDetach)
+proc theader*(nref:var Thead):Thead =
+  if nref != nil:
+    return nref
+  else:
+    result = newComponent(Thead, render,onAttach,onDetach)
   
