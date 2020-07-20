@@ -1,6 +1,6 @@
 # import karax, karaxdsl, vdom, kdom, jstrutils
 
-import karax / [karax, karaxdsl, vdom, kdom, jstrutils,vstyles,reactive]
+import karax / [karax, karaxdsl, vdom, kdom, jstrutils,vstyles]
 import jsffi except `&`
 import jsconsole
 import future

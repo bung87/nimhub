@@ -6,3 +6,4 @@
 *.html
 # Unignore all dirs
 !*/
+dest/

@@ -47,6 +47,9 @@ proc post (routerData: RouterData)  =
         obj.image = item.image.original
         obj.name = item.name
         obj.url = toJs "/#/video"
+      obj.genres = item.genres
+      obj.premiered = item.premiered
+      obj.rating = item.rating
       refA.data.add obj
       refB.data.add obj
       refC.data.add obj
@@ -56,6 +59,7 @@ proc post (routerData: RouterData)  =
     refA.markDirty()
     refB.markDirty()
     refC.markDirty()
+    console.log data
     
     redraw()
   if routerData.hashPart == "":
@@ -83,6 +87,20 @@ proc createDom(data: RouterData): VNode =
         h2:
           text "h2"
         oneRowGrid(nref = refC)
+    footer:
+      section(class="content"):
+        tdiv(class="pure-g"):
+          tdiv(class="copyright pure-u-2-3"):
+            p:
+              text "This website proudly writing in "
+              a(href="https://nim-lang.org/"):
+                text "Nim"
+              text " (Nim is a statically typed compiled systems programming language.) "
+              text " and source code is available on "
+              a(href="#"):
+                text "GitHub"
+              text " and contributions are welcome."
+ 
 
 when isMainModule:
   setRenderer createDom,clientPostRenderCallback=post

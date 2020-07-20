@@ -1,5 +1,5 @@
 include karax / prelude
-import karax/[kdom,vdom,vstyles,reactive]
+import karax/[kdom,vdom,vstyles]
 import ./autocomplete
 import jsconsole
 import ./najax
@@ -20,10 +20,11 @@ proc render(x:VComponent):VNode =
       tdiv(class="nav-content",style = style1):
         a(href="/",class="pure-menu-heading pure-menu-link site-logo-container"):
           img(class="site-logo",src="/public/images/logo.svg",height="28",alt="Nim")
-        ul(class="pure-menu-list"):
+        ul(class="pure-menu-list fl"):
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link"):
               text "Blog"
+        ul(class="pure-menu-list fr"):
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link"):
               text "Blog"

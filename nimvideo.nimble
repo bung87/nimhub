@@ -12,7 +12,9 @@ srcDir        = "src"
 
 requires "nim >= 1.3.5"
 requires "https://github.com/bung87/karax#static_server"
-
+requires "https://github.com/bung87/web_preprocessor"
 
 task watch,"watch":
   exec "karun -r -w --css:src/css.html src/nimvideo.nim"
+task preprocess,"preprocess":
+  exec "web_preprocessor -s src/assets -d dest/assets"

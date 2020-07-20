@@ -70,7 +70,7 @@ proc render(x: VComponent): VNode =
             verbatim self.textControls[index]
 
 
-proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem="slider__item", displayControls=true,controlsClassName="slider__controls",carouselControls = defaultCarouselControls,textControls = defaultTextControls) = 
+proc initCarousel*(self:Carousel,autoplay=true,autoplayTime = 3500,classNameItem="slider__item", displayControls=false,controlsClassName="slider__controls",carouselControls = defaultCarouselControls,textControls = defaultTextControls) = 
   self.controlsClassName = controlsClassName
   self.displayControls = displayControls
   self.carouselControls = carouselControls
