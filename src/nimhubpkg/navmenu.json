@@ -1,0 +1,29 @@
+{
+    "name":"all",
+    "url":"",
+    "children":[
+        {
+            "name":"genres",
+            "url":"",
+            "children":[
+                {
+                    "name":"剧情",
+                    "url":"",
+                    "children":[]
+                }
+            ]
+        },
+        {
+            "name":"region",
+            "url":"",
+            "children":[
+                {
+                    "name":"中国",
+                    "url":"",
+                    "children":[]
+                }
+            ]
+        }
+
+    ]
+}

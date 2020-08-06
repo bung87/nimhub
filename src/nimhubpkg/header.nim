@@ -4,6 +4,7 @@ import ./autocomplete
 import jsconsole
 import ./najax
 import jsffi except `&`
+import ./navmenu
 
 type Thead* = ref object of VComponent
   searchBox*:VNode
@@ -13,17 +14,18 @@ type Thead* = ref object of VComponent
 proc render(x:VComponent):VNode = 
   let self = Thead(x)
   let style1 = style(
-    (StyleAttr.overflowy, cstring"visible"),
+    (StyleAttr.overflow, cstring"visible"),
   )
   result = buildHtml(header(class="site-header")):
     nav(class="pure-menu pure-menu-horizontal pure-menu-scrollable",style = style1):
       tdiv(class="nav-content",style = style1):
         a(href="/",class="pure-menu-heading pure-menu-link site-logo-container"):
           img(class="site-logo",src="/public/images/logo.svg",height="28",alt="Nim")
-        ul(class="pure-menu-list fl"):
-          li(class="pure-menu-item"):
-            a(href="/blog.html",class="pure-menu-link"):
-              text "Blog"
+        navMenu()
+        # ul(class="pure-menu-list fl"):
+        #   li(class="pure-menu-item"):
+        #     a(href="/blog.html",class="pure-menu-link"):
+        #       text "Blog"
         ul(class="pure-menu-list fr"):
           li(class="pure-menu-item"):
             a(href="/blog.html",class="pure-menu-link"):

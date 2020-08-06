@@ -1,14 +1,14 @@
 {.experimental: "codeReordering".}
 include karax / prelude
-import nimvideo/header
-import nimvideo/carousel
-import nimvideo/mediaplayer
+import nimhubpkg/header
+import nimhubpkg/carousel
+import nimhubpkg/mediaplayer
 import jsconsole
-import nimvideo/najax
+import nimhubpkg/najax
 import jsffi
-import nimvideo/head_grid
-import nimvideo/two_row_grid
-import nimvideo/one_row_grid
+import nimhubpkg/head_grid
+import nimhubpkg/two_row_grid
+import nimhubpkg/one_row_grid
 import karax / [kdom]
 
 const url = "https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e5805a1615e68abd4384827ae323bcf1/Hero_Video.mp4"

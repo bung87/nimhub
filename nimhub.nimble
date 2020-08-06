@@ -11,7 +11,7 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.3.5"
-requires "https://github.com/bung87/karax#static_server"
+requires "karax"
 requires "https://github.com/bung87/web_preprocessor"
 
 task watch,"watch":
