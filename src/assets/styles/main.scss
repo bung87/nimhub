@@ -1240,3 +1240,6 @@ video{
 .pure-menu-has-children-level-1 > .pure-menu-link:after{
   content:"" !important;
 }
+
+#ROOT { display: flex; flex-flow: column; min-height: 100vh; } 
+#ROOT > .content { flex: 1; }
