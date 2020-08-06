@@ -67,25 +67,31 @@ proc render(x: VComponent): VNode  =
 
 proc runDiff*(self:AutocompleteComponent) = 
   if self.expanded != nil:
-    runDiff(kxi,self.expanded,render(self))
+    try:
+      runDiff(kxi,self.expanded,render(self))
+    except:
+      discard
 
 proc onAttach(x:VComponent) = 
   let self = AutocompleteComponent(x)
   
   proc pos(ev: Event; n: VNode) = 
-
+    if cast[Node](document.activeElement) != ev.currentTarget:
+      return
     var list = getVNodeById("resultList",kxi)
-    if self.choices.len > 0:
-      proc resetStyle() =
-        listStyle = listStyle.merge style(  (StyleAttr.display, cstring"block"),(StyleAttr.visibility, cstring"visible"), )
-        list.dom.applyStyle listStyle
-        listStyle = listStyle.merge style( 
-          (StyleAttr.width, cstring cast[JsObject](self.dom).getBoundingClientRect().width.to(cstring) & "px"),
-          (StyleAttr.left, cstring cast[JsObject](self.dom).getBoundingClientRect().left.to(cstring) & "px") ,
-          (StyleAttr.top, cstring cast[JsObject](self.dom.parentNode).getBoundingClientRect().height.to(cstring) & "px") ,
-        )
-        list.dom.applyStyle listStyle
-      discard setTimeout( resetStyle,500)
+    console.log self.choices.len
+    # if self.choices.len > 0:
+    proc resetStyle() =
+      var listStyle = style(  (StyleAttr.position, cstring"fixed"),(StyleAttr.display, cstring"block"),(StyleAttr.visibility, cstring"visible"), )
+      # list.dom.applyStyle listStyle
+      listStyle = listStyle.merge style( 
+        (StyleAttr.width, cstring cast[JsObject](self.dom).getBoundingClientRect().width.to(cstring) & "px"),
+        (StyleAttr.left, cstring cast[JsObject](self.dom).getBoundingClientRect().left.to(cstring) & "px") ,
+        (StyleAttr.top, cstring cast[JsObject](self.dom.parentNode).getBoundingClientRect().height.to(cstring) & "px") ,
+      )
+      console.log cast[JsObject](self.dom).getBoundingClientRect()
+      list.dom.applyStyle listStyle
+    discard setTimeout( resetStyle,500)
     
   proc onblur(ev: Event; n: VNode) = 
     var list = getVNodeById("resultList",kxi)
@@ -93,6 +99,8 @@ proc onAttach(x:VComponent) =
     list.dom.applyStyle  list.style
   
   self.inp.addEventListener(EventKind.onfocus,pos )
+  self.inp.addEventListener(EventKind.oninput, pos)
+  self.inp.addEventListener(EventKind.ontransitionend, pos)
   self.inp.addEventListener(EventKind.onblur,onblur )
 
 
