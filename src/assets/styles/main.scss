@@ -1243,3 +1243,26 @@ video{
 
 #ROOT { display: flex; flex-flow: column; min-height: 100vh; } 
 #ROOT > .content { flex: 1; }
+
+/* The emerging W3C standard
+   that is currently Firefox-only */
+   * {
+   scrollbar-width: thin;
+   scrollbar-color: rgba(121, 121, 121, 0.214) rgb(14, 14, 14);
+ }
+ 
+ /* Works on Chrome/Edge/Safari */
+ *::-webkit-scrollbar {
+   width: 12px;
+ }
+ *::-webkit-scrollbar-track {
+   background:rgb(14, 14, 14);
+ }
+ *::-webkit-scrollbar-thumb {
+   background-color:rgba(121, 121, 121, 0.214);
+   border-radius: 20px;
+  //  border: 3px solid orange;
+ }
+ body{
+  scrollbar-gutter:force;
+ }
