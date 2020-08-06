@@ -44,7 +44,8 @@ proc render(x: VComponent): VNode  =
   let self = AutocompleteComponent(x)
   
   let style = style(
-    (StyleAttr.marginTop,cstring"17px"),
+    # (StyleAttr.marginTop,cstring"17px"),
+    (StyleAttr.padding,cstring"9px"),
     (StyleAttr.display, cstring"inline-block"),
   )
 

@@ -223,7 +223,7 @@ html {
 a.pure-menu-link {
   text-decoration: none;
   padding: 17px 15px;
-  margin-top: -7px;
+  // margin-top: -7px;
   &:hover, &:focus, &.current {
     background-color: rgba(255, 255, 255, .15);
   }
@@ -568,9 +568,9 @@ span.icon>.fa {
 .fr{
   float:right;
 }
-.pure-menu-list {
-  padding-top: 7px; // HACK: Move down menu items slightly, because `float: right` makes them go up
-}
+// .pure-menu-list {
+//   padding-top: 7px; // HACK: Move down menu items slightly, because `float: right` makes them go up
+// }
 
 a.pure-button {
   background-color: #ccc;
@@ -972,7 +972,7 @@ blockquote {
   }
 
   a.pure-menu-link {
-    margin-top: -7px;
+    // margin-top: -7px;
   }
 
   .site-logo {
@@ -1082,32 +1082,32 @@ body{
   text-align: center;
   overflow-y: visible;
 }
-.pure-menu .pure-inputm,.pure-menu .pure-input-rounded{
+.pure-menu .pure-input,.pure-menu .pure-input-rounded{
   vertical-align: top;
   /* transform: translateY(50%); */
-  
+  transition: padding  0.3s cubic-bezier(0.4, 0, 1, 1);
   padding: .2em;
   background-color: #3c4053;
   border-color:transparent;
   color: snow;
 }
-.pure-menu input {
-  margin-top: -18px;
-}
+// .pure-menu input {
+//   margin-top: -18px;
+// }
 @media (min-width: 769px){
-  .pure-menu input {
-     margin-top: -6px;
-     }
+  // .pure-menu input {
+  //    margin-top: -6px;
+  //    }
  }
 
 @media (min-width: 1200px){
 .pure-menu input {
-  margin-top: -8px;
+  // margin-top: -8px;
   -webkit-font-smoothing: antialiased;
   text-align: center;
 }
-.pure-menu input:focus {
-  transition: padding  0.3s cubic-bezier(0.4, 0, 1, 1);
+.pure-menu .pure-input-rounded:focus,.pure-menu .pure-input:focus {
+  
   border-width:0.2px !important;
   padding:.2em 5em;
 }
