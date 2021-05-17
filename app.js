@@ -13752,7 +13752,7 @@ function fillData_14201071(data_14201074) {
   framePtr = F;
     if ((routerData_14201070.hashPart == "")) {
     F.line = 73;
-    ajax_11861308("get", "http://api.tvmaze.com/shows?page=7", [], "", false, null).then(cb_14330020);
+    ajax_11861308("get", "https://api.tvmaze.com/shows?page=7", [], "", false, null).then(cb_14330020);
     }
     
   framePtr = F.prev;
