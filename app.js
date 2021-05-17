@@ -13400,135 +13400,135 @@ function oneRowGrid_14195050(nref_14195053, nref_14195053_Idx) {
   return result_14195054;
 
 }
-function createDom_14330080(data_14330082) {
-  var result_14330083 = null;
+function createDom_14330158(data_14330160) {
+  var result_14330161 = null;
 
   var F={procname:"nimhub.createDom",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
   framePtr = F;
-    F.line = 70;
-    F.line = 70;
-    var tmp_14330084 = tree_10560445(43, []);
-    F.line = 71;
-    add_10550072(tmp_14330084, theader_13135036(refHead_14201066, 0));
-    if ((data_14330082.hashPart == "#/video")) {
-    F.line = 73;
-    var tmp_14330085 = tree_10560445(43, []);
-    F.line = 73;
-    tmp_14330085.class = "content";
-    F.line = 74;
-    var tmp_14330086 = tree_10560445(43, []);
-    F.line = 74;
-    tmp_14330086.class = "pure-g";
-    F.line = 75;
-    var tmp_14330087 = tree_10560445(43, []);
-    F.line = 75;
-    tmp_14330087.class = "pure-u-18-24";
-    F.line = 76;
-    var tmp_14330088 = vthunk_10465266("mplayer", [vn_10465244("vid2"), vn_10465244("https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e5805a1615e68abd4384827ae323bcf1/Hero_Video.mp4")]);
-    F.line = 76;
-    add_10550072(tmp_14330087, tmp_14330088);
-    F.line = 76;
-    add_10550072(tmp_14330086, tmp_14330087);
     F.line = 77;
-    var tmp_14330089 = tree_10560445(43, []);
     F.line = 77;
-    tmp_14330089.class = "pure-u-6-24";
-    F.line = 77;
-    add_10550072(tmp_14330086, tmp_14330089);
-    F.line = 77;
-    add_10550072(tmp_14330085, tmp_14330086);
-    F.line = 77;
-    add_10550072(tmp_14330084, tmp_14330085);
+    var tmp_14330162 = tree_10560445(43, []);
+    F.line = 78;
+    add_10550072(tmp_14330162, theader_13135036(refHead_14201067, 0));
+    if ((data_14330160.hashPart == "#/video")) {
+    F.line = 80;
+    var tmp_14330163 = tree_10560445(43, []);
+    F.line = 80;
+    tmp_14330163.class = "content";
+    F.line = 81;
+    var tmp_14330164 = tree_10560445(43, []);
+    F.line = 81;
+    tmp_14330164.class = "pure-g";
+    F.line = 82;
+    var tmp_14330165 = tree_10560445(43, []);
+    F.line = 82;
+    tmp_14330165.class = "pure-u-18-24";
+    F.line = 83;
+    var tmp_14330166 = vthunk_10465266("mplayer", [vn_10465244("vid2"), vn_10465244("https://videos.ctfassets.net/b4k16c7lw5ut/zjYyNNL2B4P1jfhmAnwcv/e5805a1615e68abd4384827ae323bcf1/Hero_Video.mp4")]);
+    F.line = 83;
+    add_10550072(tmp_14330165, tmp_14330166);
+    F.line = 83;
+    add_10550072(tmp_14330164, tmp_14330165);
+    F.line = 84;
+    var tmp_14330167 = tree_10560445(43, []);
+    F.line = 84;
+    tmp_14330167.class = "pure-u-6-24";
+    F.line = 84;
+    add_10550072(tmp_14330164, tmp_14330167);
+    F.line = 84;
+    add_10550072(tmp_14330163, tmp_14330164);
+    F.line = 84;
+    add_10550072(tmp_14330162, tmp_14330163);
     }
     else {
-      F.line = 79;
-      add_10550072(tmp_14330084, carousel_14090098(refCarousel_14201065, 0));
-      F.line = 80;
-      var tmp_14330090 = tree_10560445(43, []);
-      F.line = 80;
-      tmp_14330090.class = "content";
-      F.line = 81;
-      var tmp_14330091 = tree_10560445(22, []);
-      F.line = 82;
-      add_10550072(tmp_14330091, text_10560582(makeNimstrLit("h2")));
-      F.line = 82;
-      add_10550072(tmp_14330090, tmp_14330091);
-      F.line = 83;
-      add_10550072(tmp_14330090, headGrid_14160054(refA_14201062, 0));
-      F.line = 84;
-      var tmp_14330092 = tree_10560445(22, []);
-      F.line = 85;
-      add_10550072(tmp_14330092, text_10560582(makeNimstrLit("h2")));
-      F.line = 85;
-      add_10550072(tmp_14330090, tmp_14330092);
       F.line = 86;
-      add_10550072(tmp_14330090, twoRowGrid_14180046(refB_14201063, 0));
+      add_10550072(tmp_14330162, carousel_14090098(refCarousel_14201066, 0));
       F.line = 87;
-      var tmp_14330093 = tree_10560445(22, []);
+      var tmp_14330168 = tree_10560445(43, []);
+      F.line = 87;
+      tmp_14330168.class = "content";
       F.line = 88;
-      add_10550072(tmp_14330093, text_10560582(makeNimstrLit("h2")));
-      F.line = 88;
-      add_10550072(tmp_14330090, tmp_14330093);
+      var tmp_14330169 = tree_10560445(22, []);
       F.line = 89;
-      add_10550072(tmp_14330090, oneRowGrid_14195050(refC_14201064, 0));
+      add_10550072(tmp_14330169, text_10560582(makeNimstrLit("h2")));
       F.line = 89;
-      add_10550072(tmp_14330084, tmp_14330090);
+      add_10550072(tmp_14330168, tmp_14330169);
+      F.line = 90;
+      add_10550072(tmp_14330168, headGrid_14160054(refA_14201063, 0));
+      F.line = 91;
+      var tmp_14330170 = tree_10560445(22, []);
+      F.line = 92;
+      add_10550072(tmp_14330170, text_10560582(makeNimstrLit("h2")));
+      F.line = 92;
+      add_10550072(tmp_14330168, tmp_14330170);
+      F.line = 93;
+      add_10550072(tmp_14330168, twoRowGrid_14180046(refB_14201064, 0));
+      F.line = 94;
+      var tmp_14330171 = tree_10560445(22, []);
+      F.line = 95;
+      add_10550072(tmp_14330171, text_10560582(makeNimstrLit("h2")));
+      F.line = 95;
+      add_10550072(tmp_14330168, tmp_14330171);
+      F.line = 96;
+      add_10550072(tmp_14330168, oneRowGrid_14195050(refC_14201065, 0));
+      F.line = 96;
+      add_10550072(tmp_14330162, tmp_14330168);
     }
     
-    F.line = 90;
-    var tmp_14330094 = tree_10560445(28, []);
-    F.line = 91;
-    var tmp_14330095 = tree_10560445(17, []);
-    F.line = 91;
-    tmp_14330095.class = "content";
-    F.line = 92;
-    var tmp_14330096 = tree_10560445(43, []);
-    F.line = 92;
-    tmp_14330096.class = "pure-g";
-    F.line = 93;
-    var tmp_14330097 = tree_10560445(43, []);
-    F.line = 93;
-    tmp_14330097.class = "copyright pure-u-2-3";
-    F.line = 94;
-    var tmp_14330098 = tree_10560445(31, []);
-    F.line = 95;
-    add_10550072(tmp_14330098, text_10560582(makeNimstrLit("This website proudly writing in ")));
-    F.line = 96;
-    var tmp_14330099 = tree_10560445(44, []);
-    F.line = 96;
-    setAttr_10500105(tmp_14330099, "href", "https://nim-lang.org/");
     F.line = 97;
-    add_10550072(tmp_14330099, text_10560582(makeNimstrLit("Nim")));
-    F.line = 97;
-    add_10550072(tmp_14330098, tmp_14330099);
+    var tmp_14330172 = tree_10560445(28, []);
     F.line = 98;
-    add_10550072(tmp_14330098, text_10560582(makeNimstrLit(" (Nim is a statically typed compiled systems programming language.) ")));
+    var tmp_14330173 = tree_10560445(17, []);
+    F.line = 98;
+    tmp_14330173.class = "content";
     F.line = 99;
-    add_10550072(tmp_14330098, text_10560582(makeNimstrLit(" and source code is available on ")));
+    var tmp_14330174 = tree_10560445(43, []);
+    F.line = 99;
+    tmp_14330174.class = "pure-g";
     F.line = 100;
-    var tmp_14330100 = tree_10560445(44, []);
+    var tmp_14330175 = tree_10560445(43, []);
     F.line = 100;
-    setAttr_10500105(tmp_14330100, "href", "#");
+    tmp_14330175.class = "copyright pure-u-2-3";
     F.line = 101;
-    add_10550072(tmp_14330100, text_10560582(makeNimstrLit("GitHub")));
-    F.line = 101;
-    add_10550072(tmp_14330098, tmp_14330100);
+    var tmp_14330176 = tree_10560445(31, []);
     F.line = 102;
-    add_10550072(tmp_14330098, text_10560582(makeNimstrLit(" and contributions are welcome.")));
-    F.line = 102;
-    add_10550072(tmp_14330097, tmp_14330098);
-    F.line = 102;
-    add_10550072(tmp_14330096, tmp_14330097);
-    F.line = 102;
-    add_10550072(tmp_14330095, tmp_14330096);
-    F.line = 102;
-    add_10550072(tmp_14330094, tmp_14330095);
-    F.line = 102;
-    add_10550072(tmp_14330084, tmp_14330094);
-    result_14330083 = tmp_14330084;
+    add_10550072(tmp_14330176, text_10560582(makeNimstrLit("This website proudly writing in ")));
+    F.line = 103;
+    var tmp_14330177 = tree_10560445(44, []);
+    F.line = 103;
+    setAttr_10500105(tmp_14330177, "href", "https://nim-lang.org/");
+    F.line = 104;
+    add_10550072(tmp_14330177, text_10560582(makeNimstrLit("Nim")));
+    F.line = 104;
+    add_10550072(tmp_14330176, tmp_14330177);
+    F.line = 105;
+    add_10550072(tmp_14330176, text_10560582(makeNimstrLit(" (Nim is a statically typed compiled systems programming language.) ")));
+    F.line = 106;
+    add_10550072(tmp_14330176, text_10560582(makeNimstrLit(" and source code is available on ")));
+    F.line = 107;
+    var tmp_14330178 = tree_10560445(44, []);
+    F.line = 107;
+    setAttr_10500105(tmp_14330178, "href", "#");
+    F.line = 108;
+    add_10550072(tmp_14330178, text_10560582(makeNimstrLit("GitHub")));
+    F.line = 108;
+    add_10550072(tmp_14330176, tmp_14330178);
+    F.line = 109;
+    add_10550072(tmp_14330176, text_10560582(makeNimstrLit(" and contributions are welcome.")));
+    F.line = 109;
+    add_10550072(tmp_14330175, tmp_14330176);
+    F.line = 109;
+    add_10550072(tmp_14330174, tmp_14330175);
+    F.line = 109;
+    add_10550072(tmp_14330173, tmp_14330174);
+    F.line = 109;
+    add_10550072(tmp_14330172, tmp_14330173);
+    F.line = 109;
+    add_10550072(tmp_14330162, tmp_14330172);
+    result_14330161 = tmp_14330162;
   framePtr = F.prev;
 
-  return result_14330083;
+  return result_14330161;
 
 }
 function HEX40_11861332(a_11861336) {
@@ -13653,86 +13653,95 @@ function ajax_11861308(meth_11861310, url_11861311, headers_11861318, data_11861
   return result_11861331;
 
 }
-function post_14201067(routerData_14201069) {
-    function cb_14201070(r_14201072) {
+function post_14201068(routerData_14201070) {
+function fillData_14201071(data_14201074) {
+  var F={procname:"post.fillData",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
+  framePtr = F;
+    L1: do {
+      F.line = 41;
+      var index_14201084 = 0;
+      F.line = 41;
+      var item_14201085 = null;
+      F.line = 132;
+      var i_14335702 = 0;
+      F.line = 133;
+      var L_14335703 = (data_14201074).length;
+      L2: do {
+        F.line = 134;
+          L3: while (true) {
+          if (!(i_14335702 < L_14335703)) break L3;
+            F.line = 41;
+            index_14201084 = i_14335702;
+            F.line = 135;
+            item_14201085 = data_14201074[chckIndx(i_14335702, 0, (data_14201074).length-1)];
+            F.line = 42;
+            var obj_14201086 = {};
+            if (!((index_14201084 == 0))) {
+            F.line = 44;
+            obj_14201086.image = item_14201085.image.medium;
+            F.line = 45;
+            obj_14201086.name = item_14201085.name;
+            F.line = 46;
+            obj_14201086.url = ("/#/video");
+            }
+            else {
+              F.line = 48;
+              obj_14201086.image = item_14201085.image.original;
+              F.line = 49;
+              obj_14201086.name = item_14201085.name;
+              F.line = 50;
+              obj_14201086.url = ("/#/video");
+            }
+            
+            F.line = 51;
+            obj_14201086.genres = item_14201085.genres;
+            F.line = 52;
+            obj_14201086.premiered = item_14201085.premiered;
+            F.line = 53;
+            obj_14201086.rating = item_14201085.rating;
+            F.line = 54;
+            refA_14201063[0].data.push(obj_14201086);;
+            F.line = 55;
+            refB_14201064[0].data.push(obj_14201086);;
+            F.line = 56;
+            refC_14201065[0].data.push(obj_14201086);;
+            if (!((refCarousel_14201066[0] == null))) {
+            F.line = 58;
+            refCarousel_14201066[0].data.push(obj_14201086);;
+            F.line = 59;
+            refCarousel_14201066[0].version = addInt(refCarousel_14201066[0].version, 1);
+            }
+            
+            F.line = 136;
+            i_14335702 = addInt(i_14335702, 1);
+            if (!(((data_14201074).length == L_14335703))) {
+            F.line = 137;
+            failedAssertImpl_1305480(makeNimstrLit("/Users/bung/.choosenim/toolchains/nim-1.4.4/lib/system/iterators.nim(137, 11) `len(a) == L` the length of the seq changed while iterating over it"));
+            }
+            
+          }
+      } while(false);
+    } while(false);
+    F.line = 60;
+    refA_14201063[0].version = addInt(refA_14201063[0].version, 1);
+    F.line = 61;
+    refB_14201064[0].version = addInt(refB_14201064[0].version, 1);
+    F.line = 62;
+    refC_14201065[0].version = addInt(refC_14201065[0].version, 1);
+    F.line = 63;
+    console.log(data_14201074);
+  framePtr = F.prev;
+
+  
+}
+    function cb_14330020(r_14330022) {
       var F={procname:"post.cb",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
       framePtr = F;
-        F.line = 39;
-        var data_14201080 = JSON.parse(r_14201072.response);
-        L1: do {
-          F.line = 40;
-          var index_14201090 = 0;
-          F.line = 40;
-          var item_14201091 = null;
-          F.line = 132;
-          var i_14335702 = 0;
-          F.line = 133;
-          var L_14335703 = (data_14201080).length;
-          L2: do {
-            F.line = 134;
-              L3: while (true) {
-              if (!(i_14335702 < L_14335703)) break L3;
-                F.line = 40;
-                index_14201090 = i_14335702;
-                F.line = 135;
-                item_14201091 = data_14201080[chckIndx(i_14335702, 0, (data_14201080).length-1)];
-                F.line = 41;
-                var obj_14201092 = {};
-                if (!((index_14201090 == 0))) {
-                F.line = 43;
-                obj_14201092.image = item_14201091.image.medium;
-                F.line = 44;
-                obj_14201092.name = item_14201091.name;
-                F.line = 45;
-                obj_14201092.url = ("/#/video");
-                }
-                else {
-                  F.line = 47;
-                  obj_14201092.image = item_14201091.image.original;
-                  F.line = 48;
-                  obj_14201092.name = item_14201091.name;
-                  F.line = 49;
-                  obj_14201092.url = ("/#/video");
-                }
-                
-                F.line = 50;
-                obj_14201092.genres = item_14201091.genres;
-                F.line = 51;
-                obj_14201092.premiered = item_14201091.premiered;
-                F.line = 52;
-                obj_14201092.rating = item_14201091.rating;
-                F.line = 53;
-                refA_14201062[0].data.push(obj_14201092);;
-                F.line = 54;
-                refB_14201063[0].data.push(obj_14201092);;
-                F.line = 55;
-                refC_14201064[0].data.push(obj_14201092);;
-                if (!((refCarousel_14201065[0] == null))) {
-                F.line = 57;
-                refCarousel_14201065[0].data.push(obj_14201092);;
-                F.line = 58;
-                refCarousel_14201065[0].version = addInt(refCarousel_14201065[0].version, 1);
-                }
-                
-                F.line = 136;
-                i_14335702 = addInt(i_14335702, 1);
-                if (!(((data_14201080).length == L_14335703))) {
-                F.line = 137;
-                failedAssertImpl_1305480(makeNimstrLit("/Users/bung/.choosenim/toolchains/nim-1.4.4/lib/system/iterators.nim(137, 11) `len(a) == L` the length of the seq changed while iterating over it"));
-                }
-                
-              }
-          } while(false);
-        } while(false);
-        F.line = 59;
-        refA_14201062[0].version = addInt(refA_14201062[0].version, 1);
-        F.line = 60;
-        refB_14201063[0].version = addInt(refB_14201063[0].version, 1);
-        F.line = 61;
-        refC_14201064[0].version = addInt(refC_14201064[0].version, 1);
-        F.line = 62;
-        console.log(data_14201080);
-        F.line = 64;
+        F.line = 65;
+        var data_14330030 = JSON.parse(r_14330022.response);
+        F.line = 66;
+        fillData_14201071(data_14330030);
+        F.line = 67;
         redraw_11450414(kxi_10897284[0]);
       framePtr = F.prev;
 
@@ -13741,34 +13750,34 @@ function post_14201067(routerData_14201069) {
 
   var F={procname:"nimhub.post",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
   framePtr = F;
-    if ((routerData_14201069.hashPart == "")) {
-    F.line = 66;
-    ajax_11861308("get", "http://api.tvmaze.com/shows", [], "", false, null).then(cb_14201070);
+    if ((routerData_14201070.hashPart == "")) {
+    F.line = 73;
+    ajax_11861308("get", "http://api.tvmaze.com/shows?page=7", [], "", false, null).then(cb_14330020);
     }
     
   framePtr = F.prev;
 
   
 }
-function replaceById_14201002(id_14201004, newTree_14201005) {
+function replaceById_14201003(id_14201005, newTree_14201006) {
   var F={procname:"nimhub.replaceById",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
   framePtr = F;
     F.line = 18;
-    var x_14201006 = document.getElementById(id_14201004);
+    var x_14201007 = document.getElementById(id_14201005);
     F.line = 19;
-    newTree_14201005.id = id_14201004;
+    newTree_14201006.id = id_14201005;
     F.line = 20;
-    x_14201006.parentNode.replaceChild(toDom_11010154(newTree_14201005, true, null), x_14201006);
+    x_14201007.parentNode.replaceChild(toDom_11010154(newTree_14201006, true, null), x_14201007);
   framePtr = F.prev;
 
   
 }
-function setInitializer_14201023(initializer_14201028, root_14201029) {
-    function HEX3Aanonymous_14201034() {
+function setInitializer_14201024(initializer_14201029, root_14201030) {
+    function HEX3Aanonymous_14201035() {
       var F={procname:"setInitializer.:anonymous",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
       framePtr = F;
         F.line = 29;
-        replaceById_14201002(root_14201029, initializer_14201028({hashPart: window.location.hash}));
+        replaceById_14201003(root_14201030, initializer_14201029({hashPart: window.location.hash}));
       framePtr = F.prev;
 
       
@@ -13777,7 +13786,7 @@ function setInitializer_14201023(initializer_14201028, root_14201029) {
   var F={procname:"nimhub.setInitializer",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
   framePtr = F;
     F.line = 28;
-    window.onhashchange = HEX3Aanonymous_14201034;
+    window.onhashchange = HEX3Aanonymous_14201035;
   framePtr = F.prev;
 
   
@@ -13787,8 +13796,8 @@ function HEX3Aanonymous_14335100(data_14335102) {
 
   var F={procname:"nimhub.:anonymous",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
   framePtr = F;
-    F.line = 108;
-    result_14335103 = createDom_14330080(data_14335102);
+    F.line = 115;
+    result_14335103 = createDom_14330158(data_14335102);
   framePtr = F.prev;
 
   return result_14335103;
@@ -13797,18 +13806,18 @@ function HEX3Aanonymous_14335100(data_14335102) {
 var F={procname:"module nimhub",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
 framePtr = F;
 F.line = 31;
-var refA_14201062 = [null];
+var refA_14201063 = [null];
 F.line = 32;
-var refB_14201063 = [null];
+var refB_14201064 = [null];
 F.line = 33;
-var refC_14201064 = [null];
+var refC_14201065 = [null];
 F.line = 34;
-var refCarousel_14201065 = [null];
+var refCarousel_14201066 = [null];
 F.line = 35;
-var refHead_14201066 = [null];
-setRenderer_11450693(createDom_14330080, "ROOT", post_14201067);
-F.line = 107;
-setInitializer_14201023(HEX3Aanonymous_14335100, "ROOT");
+var refHead_14201067 = [null];
+setRenderer_11450693(createDom_14330158, "ROOT", post_14201068);
+F.line = 114;
+setInitializer_14201024(HEX3Aanonymous_14335100, "ROOT");
 framePtr = F.prev;
 var F={procname:"module nimhub",prev:framePtr,filename:"/Users/bung/nim_works/nimhub/src/nimhub.nim",line:0};
 framePtr = F;
