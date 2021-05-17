@@ -3927,3 +3927,8 @@ video {
 /* line 1266, src/assets/styles/main.scss */
 body {
   scrollbar-gutter: force; }
+
+/* line 1269, src/assets/styles/main.scss */
+.stretch {
+  max-height: 565px;
+  overflow: hidden; }
