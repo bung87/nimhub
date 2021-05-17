@@ -70,7 +70,7 @@ proc post (routerData: RouterData)  =
     fillData(data)
     redraw()
   if routerData.hashPart == "":
-    ajax(cstring"get",cstring"http://api.tvmaze.com/shows?page=7").then cb,fails
+    ajax(cstring"get",cstring"https://api.tvmaze.com/shows?page=7").then(cb,fails)
 
 
 proc createDom(data: RouterData): VNode =
