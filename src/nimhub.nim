@@ -34,8 +34,6 @@ var refC:OneRowGrid
 var refCarousel:Carousel
 var refHead:Thead
 
-
-  
 proc post (routerData: RouterData)  =
   proc fillData(data:seq[JsObject]) = 
     for index,item in data:
